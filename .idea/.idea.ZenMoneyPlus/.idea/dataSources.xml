@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="ZenMoneyPlus" uuid="dd5dec7a-ef8e-46b7-a128-c85279c19dec">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/ZenMoneyPlus/bin/Debug/netcoreapp3.1/data.db</jdbc-url>
+    </data-source>
+  </component>
+</project>
