@@ -6,5 +6,6 @@ namespace ZenMoneyPlus.Messages
     {
         public long ServerTimestamp { get; set; }
         public Tag[] Tag { get; set; }
+        public Transaction[] Transaction { get; set; }
     }
 }

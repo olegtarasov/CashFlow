@@ -5,6 +5,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Serilog;
 using ZenMoneyPlus.Messages;
 using ZenMoneyPlus.Models;
 
@@ -12,6 +13,8 @@ namespace ZenMoneyPlus
 {
     public class ZenClient : IDisposable, IAsyncDisposable
     {
+        private static readonly ILogger _log = Log.ForContext<ZenClient>();
+        
         private readonly string _authToken;
         private readonly HttpClient _client;
 
@@ -21,7 +24,7 @@ namespace ZenMoneyPlus
             _client = CreateClient();
         }
 
-        public async Task PullData(long timestamp)
+        public async Task<SyncResponse> Sync(long timestamp)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "v8/diff");
             request.Content = new StringContent("{" +
@@ -30,14 +33,19 @@ namespace ZenMoneyPlus
                 $"\"serverTimestamp\": {timestamp}" +
                 "}", Encoding.UTF8, MediaTypeNames.Application.Json);
 
+            _log.Information("Sending sync request");
             var response = await _client.SendAsync(request);
+            _log.Information("Received response: {0}, {1}", response.StatusCode, response.ReasonPhrase);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
+            _log.Information("Deserializing response");
             var data = JsonSerializer.Deserialize<SyncResponse>(content, new JsonSerializerOptions
             {
                 IgnoreNullValues = true,
                 PropertyNameCaseInsensitive = true,
             });
+
+            return data;
         }
 
         private HttpClient CreateClient()

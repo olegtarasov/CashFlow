@@ -2,18 +2,25 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
 using ZenMoneyPlus.Models;
 
 namespace ZenMoneyPlus
 {
     internal class Program
     {
+        private static readonly ILogger _log = Log.ForContext<Program>();
+        
         internal static async Task Main(string[] args)
         {
+            LoggerConfig.ConfigureSerilog();
+            
             string token = await Init(args);
             if (string.IsNullOrEmpty(token))
             {
-                Console.WriteLine("Couldn't get auth token. Exiting.");
+                _log.Error("Couldn't get auth token. Exiting.");
                 return;
             }
             
@@ -71,7 +78,7 @@ namespace ZenMoneyPlus
             return args[0].ToLower() switch
             {
                 "cat" => ParseCat(Pop(args)),
-                "pull" => App.Sync.Pull(token),
+                "sync" => App.Sync.SyncData(token),
                 _ => Help()
             };
 
@@ -79,7 +86,7 @@ namespace ZenMoneyPlus
             {
                 Console.WriteLine("Available commands:\n" +
                                   "\tcat\n" +
-                                  "\tpull");
+                                  "\tsync");
 
                 return Task.CompletedTask;
             }
@@ -100,7 +107,7 @@ namespace ZenMoneyPlus
             return args[0].ToLower() switch
             {
                 "ls" => App.Categories.List(),
-                _ => Help()
+                _ => App.Categories.List()
             };
 
             Task Help()

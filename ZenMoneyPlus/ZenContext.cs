@@ -18,16 +18,24 @@ namespace ZenMoneyPlus
                 .HasOne<Tag>(x => x.ParentTag)
                 .WithMany(x => x.ChildrenTags)
                 .HasForeignKey(x => x.Parent);
-
+            
             modelBuilder.Entity<TransactionTag>()
                 .HasKey(x => new {x.TagId, x.TransactionId});
+            
+            // modelBuilder.Entity<TransactionTag>()
+            //     .HasOne(tt => tt.Tag)
+            //     .WithMany(t => t.TransactionTags)
+            //     .HasForeignKey()
+                
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             base.OnConfiguring(options);
 
-            options.UseSqlite("Data Source=data.db");
+            options
+                .UseLazyLoadingProxies()
+                .UseSqlite("Data Source=data.db");
         }
     }
 }

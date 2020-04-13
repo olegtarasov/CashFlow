@@ -69,17 +69,12 @@ namespace ZenMoneyPlus.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("TransactionId")
-                        .HasColumnType("TEXT");
-
                     b.Property<long>("User")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Parent");
-
-                    b.HasIndex("TransactionId");
 
                     b.ToTable("Tags");
                 });
@@ -102,10 +97,10 @@ namespace ZenMoneyPlus.Migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Hold")
-                        .HasColumnType("TEXT");
+                    b.Property<bool?>("Hold")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("Income")
+                    b.Property<decimal?>("Income")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("IncomeAccount")
@@ -117,22 +112,22 @@ namespace ZenMoneyPlus.Migrations
                     b.Property<long>("IncomeInstrument")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Latitude")
+                    b.Property<decimal?>("Latitude")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Longitude")
+                    b.Property<decimal?>("Longitude")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Merchant")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("OpIncome")
+                    b.Property<decimal?>("OpIncome")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OpIncomeInstrument")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("OpOutcome")
+                    b.Property<decimal?>("OpOutcome")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OpOutcomeInstrument")
@@ -141,7 +136,7 @@ namespace ZenMoneyPlus.Migrations
                     b.Property<string>("OriginalPayee")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Outcome")
+                    b.Property<decimal?>("Outcome")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OutcomeAccount")
@@ -195,22 +190,18 @@ namespace ZenMoneyPlus.Migrations
                     b.HasOne("ZenMoneyPlus.Models.Tag", "ParentTag")
                         .WithMany("ChildrenTags")
                         .HasForeignKey("Parent");
-
-                    b.HasOne("ZenMoneyPlus.Models.Transaction", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("TransactionId");
                 });
 
             modelBuilder.Entity("ZenMoneyPlus.Models.TransactionTag", b =>
                 {
                     b.HasOne("ZenMoneyPlus.Models.Tag", "Tag")
-                        .WithMany()
+                        .WithMany("TransactionTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ZenMoneyPlus.Models.Transaction", "Transaction")
-                        .WithMany()
+                        .WithMany("TransactionTags")
                         .HasForeignKey("TransactionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

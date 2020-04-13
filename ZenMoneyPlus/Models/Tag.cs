@@ -16,7 +16,8 @@ namespace ZenMoneyPlus.Models
         public bool ShowOutcome { get; set; }
         public string Parent { get; set; }
 
-        public Tag ParentTag { get; set; }
-        public List<Tag> ChildrenTags { get; set; }
+        public virtual Tag ParentTag { get; set; }
+        public virtual List<Tag> ChildrenTags { get; set; }
+        public virtual List<TransactionTag> TransactionTags { get; set; }
     }
 }
