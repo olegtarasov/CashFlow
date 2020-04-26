@@ -48,6 +48,24 @@ namespace ZenMoneyPlus
             return data;
         }
 
+        public async Task<Receipt> GetReceipt(string qrCode)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, "parse_qr_code");
+            request.Content = new StringContent($"{{\"code\": \"{qrCode}\"}}", Encoding.UTF8, MediaTypeNames.Application.Json);
+
+            var response = await _client.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+                return null;
+            var content = await response.Content.ReadAsStringAsync();
+            var data = JsonSerializer.Deserialize<Receipt>(content, new JsonSerializerOptions
+            {
+                IgnoreNullValues = true,
+                PropertyNameCaseInsensitive = true,
+            });
+
+            return data;
+        }
+
         private HttpClient CreateClient()
         {
             var client = new HttpClient

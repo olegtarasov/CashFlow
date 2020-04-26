@@ -77,11 +77,38 @@ namespace ZenMoneyPlus.Migrations
                     Merchant = table.Column<string>(nullable: true),
                     IncomeBankId = table.Column<string>(nullable: true),
                     OutcomeBankId = table.Column<string>(nullable: true),
-                    ReminderMarker = table.Column<string>(nullable: true)
+                    ReminderMarker = table.Column<string>(nullable: true),
+                    GetReceiptFailed = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transactions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Receipts",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Sum = table.Column<decimal>(nullable: true),
+                    Date = table.Column<string>(nullable: true),
+                    Time = table.Column<string>(nullable: true),
+                    Payee = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    CardSum = table.Column<decimal>(nullable: true),
+                    CashSum = table.Column<decimal>(nullable: true),
+                    TransactionId = table.Column<string>(maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Receipts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Receipts_Transactions_TransactionId",
+                        column: x => x.TransactionId,
+                        principalTable: "Transactions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -108,6 +135,40 @@ namespace ZenMoneyPlus.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ReceiptItems",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Sum = table.Column<decimal>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Price = table.Column<decimal>(nullable: true),
+                    Quantity = table.Column<decimal>(nullable: true),
+                    ReceiptId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReceiptItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReceiptItems_Receipts_ReceiptId",
+                        column: x => x.ReceiptId,
+                        principalTable: "Receipts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReceiptItems_ReceiptId",
+                table: "ReceiptItems",
+                column: "ReceiptId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Receipts_TransactionId",
+                table: "Receipts",
+                column: "TransactionId",
+                unique: true);
+
             migrationBuilder.CreateIndex(
                 name: "IX_Tags_Parent",
                 table: "Tags",
@@ -122,10 +183,16 @@ namespace ZenMoneyPlus.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ReceiptItems");
+
+            migrationBuilder.DropTable(
                 name: "Settings");
 
             migrationBuilder.DropTable(
                 name: "TransactionTags");
+
+            migrationBuilder.DropTable(
+                name: "Receipts");
 
             migrationBuilder.DropTable(
                 name: "Tags");

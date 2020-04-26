@@ -9,6 +9,8 @@ namespace ZenMoneyPlus
         public DbSet<Tag> Tags { get; set; }
         public DbSet<TransactionTag> TransactionTags { get; set; }
         public DbSet<Setting> Settings { get; set; }
+        public DbSet<Receipt> Receipts { get; set; }
+        public DbSet<ReceiptItem> ReceiptItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,12 +23,22 @@ namespace ZenMoneyPlus
             
             modelBuilder.Entity<TransactionTag>()
                 .HasKey(x => new {x.TagId, x.TransactionId});
-            
+
+            modelBuilder.Entity<ReceiptItem>()
+                .HasOne(x => x.Receipt)
+                .WithMany(x => x.ReceiptItems)
+                .HasForeignKey(x => x.ReceiptId);
+
+            modelBuilder.Entity<Receipt>()
+                .HasOne(x => x.Transaction)
+                .WithOne(x => x.Receipt)
+                .HasForeignKey<Receipt>(x => x.TransactionId);
+
             // modelBuilder.Entity<TransactionTag>()
             //     .HasOne(tt => tt.Tag)
             //     .WithMany(t => t.TransactionTags)
             //     .HasForeignKey()
-                
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

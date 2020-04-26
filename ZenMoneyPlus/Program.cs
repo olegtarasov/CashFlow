@@ -79,6 +79,7 @@ namespace ZenMoneyPlus
             {
                 "cat" => ParseCat(Pop(args)),
                 "sync" => App.Sync.SyncData(token),
+                "receipts" => App.Receipts.GetMissingReceipts(token),
                 _ => Help()
             };
 

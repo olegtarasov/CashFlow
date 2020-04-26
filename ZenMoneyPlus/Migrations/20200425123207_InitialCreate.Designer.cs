@@ -9,7 +9,7 @@ using ZenMoneyPlus;
 namespace ZenMoneyPlus.Migrations
 {
     [DbContext(typeof(ZenContext))]
-    [Migration("20200413083407_InitialCreate")]
+    [Migration("20200425123207_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,6 +17,74 @@ namespace ZenMoneyPlus.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.3");
+
+            modelBuilder.Entity("ZenMoneyPlus.Models.Receipt", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal?>("CardSum")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal?>("CashSum")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Payee")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal?>("Sum")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Time")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TransactionId")
+                        .IsUnique();
+
+                    b.ToTable("Receipts");
+                });
+
+            modelBuilder.Entity("ZenMoneyPlus.Models.ReceiptItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal?>("Quantity")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("ReceiptId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal?>("Sum")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiptId");
+
+                    b.ToTable("ReceiptItems");
+                });
 
             modelBuilder.Entity("ZenMoneyPlus.Models.Setting", b =>
                 {
@@ -97,6 +165,9 @@ namespace ZenMoneyPlus.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("GetReceiptFailed")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool?>("Hold")
@@ -185,6 +256,24 @@ namespace ZenMoneyPlus.Migrations
                     b.HasIndex("TransactionId");
 
                     b.ToTable("TransactionTags");
+                });
+
+            modelBuilder.Entity("ZenMoneyPlus.Models.Receipt", b =>
+                {
+                    b.HasOne("ZenMoneyPlus.Models.Transaction", "Transaction")
+                        .WithOne("Receipt")
+                        .HasForeignKey("ZenMoneyPlus.Models.Receipt", "TransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ZenMoneyPlus.Models.ReceiptItem", b =>
+                {
+                    b.HasOne("ZenMoneyPlus.Models.Receipt", "Receipt")
+                        .WithMany("ReceiptItems")
+                        .HasForeignKey("ReceiptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ZenMoneyPlus.Models.Tag", b =>

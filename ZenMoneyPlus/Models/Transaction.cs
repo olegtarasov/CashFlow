@@ -29,10 +29,12 @@ namespace ZenMoneyPlus.Models
         public string IncomeBankId { get; set; }
         public string OutcomeBankId { get; set; }
         public string ReminderMarker { get; set; }
+        public bool GetReceiptFailed { get; set; }
         
         [NotMapped]
         public string[] Tag { get; set; }
 
         public virtual List<TransactionTag> TransactionTags { get; set; }
+        public virtual Receipt Receipt { get; set; }
     }
 }
