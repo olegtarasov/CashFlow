@@ -78,8 +78,12 @@ namespace ZenMoneyPlus
             return args[0].ToLower() switch
             {
                 "cat" => ParseCat(Pop(args)),
-                "sync" => App.Sync.SyncData(token),
-                "receipts" => App.Receipts.GetMissingReceipts(token),
+                "sync" => Task.Run(async () =>
+                {
+                    await App.Sync.SyncData(token);
+                    await App.Receipts.GetMissingReceipts(token);
+                }),
+                "receipts" => App.Receipts.GetMissingReceipts(token, true),
                 _ => Help()
             };
 

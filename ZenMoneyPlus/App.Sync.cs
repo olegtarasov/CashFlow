@@ -33,11 +33,17 @@ namespace ZenMoneyPlus
                 await using var client = new ZenClient(token);
                 var data = await client.Sync(timestamp);
 
-                _log.Information("Updating local categories");
-                await PullCategories(ctx, data.Tag);
-                
-                _log.Information("Updating local transactions");
-                await PullTransactions(ctx, data.Transaction);
+                if (data.Tag != null && data.Tag.Length > 0)
+                {
+                    _log.Information("Updating local categories");
+                    await PullCategories(ctx, data.Tag);
+                }
+
+                if (data.Transaction != null && data.Transaction.Length > 0)
+                {
+                    _log.Information("Updating local transactions");
+                    await PullTransactions(ctx, data.Transaction);
+                }
 
                 timestampSetting.Value = data.ServerTimestamp.ToString();
                 await ctx.SaveChangesAsync();
