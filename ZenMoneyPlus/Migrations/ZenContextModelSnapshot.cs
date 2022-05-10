@@ -3,7 +3,9 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ZenMoneyPlus;
+using ZenMoneyPlus.Data;
+
+#nullable disable
 
 namespace ZenMoneyPlus.Migrations
 {
@@ -13,10 +15,9 @@ namespace ZenMoneyPlus.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
 
-            modelBuilder.Entity("ZenMoneyPlus.Models.Receipt", b =>
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Receipt", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -45,8 +46,8 @@ namespace ZenMoneyPlus.Migrations
 
                     b.Property<string>("TransactionId")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -56,7 +57,7 @@ namespace ZenMoneyPlus.Migrations
                     b.ToTable("Receipts");
                 });
 
-            modelBuilder.Entity("ZenMoneyPlus.Models.ReceiptItem", b =>
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.ReceiptItem", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -84,13 +85,14 @@ namespace ZenMoneyPlus.Migrations
                     b.ToTable("ReceiptItems");
                 });
 
-            modelBuilder.Entity("ZenMoneyPlus.Models.Setting", b =>
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Setting", b =>
                 {
                     b.Property<string>("Code")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Code");
@@ -98,11 +100,11 @@ namespace ZenMoneyPlus.Migrations
                     b.ToTable("Settings");
                 });
 
-            modelBuilder.Entity("ZenMoneyPlus.Models.Tag", b =>
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Tag", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("BudgetIncome")
                         .HasColumnType("INTEGER");
@@ -147,11 +149,11 @@ namespace ZenMoneyPlus.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("ZenMoneyPlus.Models.Transaction", b =>
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Transaction", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
 
                     b.Property<long>("Changed")
                         .HasColumnType("INTEGER");
@@ -239,15 +241,15 @@ namespace ZenMoneyPlus.Migrations
                     b.ToTable("Transactions");
                 });
 
-            modelBuilder.Entity("ZenMoneyPlus.Models.TransactionTag", b =>
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.TransactionTag", b =>
                 {
                     b.Property<string>("TagId")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("TransactionId")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("TagId", "TransactionId");
 
@@ -256,44 +258,73 @@ namespace ZenMoneyPlus.Migrations
                     b.ToTable("TransactionTags");
                 });
 
-            modelBuilder.Entity("ZenMoneyPlus.Models.Receipt", b =>
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Receipt", b =>
                 {
-                    b.HasOne("ZenMoneyPlus.Models.Transaction", "Transaction")
+                    b.HasOne("ZenMoneyPlus.Data.Entities.Transaction", "Transaction")
                         .WithOne("Receipt")
-                        .HasForeignKey("ZenMoneyPlus.Models.Receipt", "TransactionId")
+                        .HasForeignKey("ZenMoneyPlus.Data.Entities.Receipt", "TransactionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Transaction");
                 });
 
-            modelBuilder.Entity("ZenMoneyPlus.Models.ReceiptItem", b =>
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.ReceiptItem", b =>
                 {
-                    b.HasOne("ZenMoneyPlus.Models.Receipt", "Receipt")
+                    b.HasOne("ZenMoneyPlus.Data.Entities.Receipt", "Receipt")
                         .WithMany("ReceiptItems")
                         .HasForeignKey("ReceiptId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Receipt");
                 });
 
-            modelBuilder.Entity("ZenMoneyPlus.Models.Tag", b =>
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Tag", b =>
                 {
-                    b.HasOne("ZenMoneyPlus.Models.Tag", "ParentTag")
+                    b.HasOne("ZenMoneyPlus.Data.Entities.Tag", "ParentTag")
                         .WithMany("ChildrenTags")
                         .HasForeignKey("Parent");
+
+                    b.Navigation("ParentTag");
                 });
 
-            modelBuilder.Entity("ZenMoneyPlus.Models.TransactionTag", b =>
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.TransactionTag", b =>
                 {
-                    b.HasOne("ZenMoneyPlus.Models.Tag", "Tag")
+                    b.HasOne("ZenMoneyPlus.Data.Entities.Tag", "Tag")
                         .WithMany("TransactionTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ZenMoneyPlus.Models.Transaction", "Transaction")
+                    b.HasOne("ZenMoneyPlus.Data.Entities.Transaction", "Transaction")
                         .WithMany("TransactionTags")
                         .HasForeignKey("TransactionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Tag");
+
+                    b.Navigation("Transaction");
+                });
+
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Receipt", b =>
+                {
+                    b.Navigation("ReceiptItems");
+                });
+
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Tag", b =>
+                {
+                    b.Navigation("ChildrenTags");
+
+                    b.Navigation("TransactionTags");
+                });
+
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Transaction", b =>
+                {
+                    b.Navigation("Receipt");
+
+                    b.Navigation("TransactionTags");
                 });
 #pragma warning restore 612, 618
         }
