@@ -11,13 +11,115 @@ using ZenMoneyPlus.Data;
 namespace ZenMoneyPlus.Migrations
 {
     [DbContext(typeof(ZenContext))]
-    [Migration("20220510135108_InitialCreate")]
+    [Migration("20220511141600_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
+
+            modelBuilder.Entity("TagTransaction", b =>
+                {
+                    b.Property<string>("TagsId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TransactionsId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("TagsId", "TransactionsId");
+
+                    b.HasIndex("TransactionsId");
+
+                    b.ToTable("TagTransaction");
+                });
+
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Account", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Archive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BalanceCorrectionType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool?>("Capitalization")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Changed")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Company")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("CreditLimit")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EnableCorrection")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("EnableSms")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("EndDateOffset")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("EndDateOffsetInterval")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("InBalance")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Instrument")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PayoffInterval")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("PayoffStep")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal?>("Percent")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Private")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Savings")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("StartBalance")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StartDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SyncId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("User")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Accounts");
+                });
 
             modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Receipt", b =>
                 {
@@ -35,6 +137,10 @@ namespace ZenMoneyPlus.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Date")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Inn")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Payee")
@@ -44,6 +150,7 @@ namespace ZenMoneyPlus.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Time")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("TransactionId")
@@ -114,8 +221,9 @@ namespace ZenMoneyPlus.Migrations
                     b.Property<bool>("BudgetOutcome")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("Changed")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Changed")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Color")
                         .HasColumnType("TEXT");
@@ -157,14 +265,20 @@ namespace ZenMoneyPlus.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<long>("Changed")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Changed")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Comment")
                         .HasColumnType("TEXT");
 
-                    b.Property<long>("Created")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Created")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Date")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("INTEGER");
@@ -175,10 +289,10 @@ namespace ZenMoneyPlus.Migrations
                     b.Property<bool?>("Hold")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal?>("Income")
+                    b.Property<decimal>("Income")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("IncomeAccount")
+                    b.Property<string>("IncomeAccountId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("IncomeBankId")
@@ -211,10 +325,10 @@ namespace ZenMoneyPlus.Migrations
                     b.Property<string>("OriginalPayee")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal?>("Outcome")
+                    b.Property<decimal>("Outcome")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("OutcomeAccount")
+                    b.Property<string>("OutcomeAccountId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OutcomeBankId")
@@ -240,24 +354,26 @@ namespace ZenMoneyPlus.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IncomeAccountId");
+
+                    b.HasIndex("OutcomeAccountId");
+
                     b.ToTable("Transactions");
                 });
 
-            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.TransactionTag", b =>
+            modelBuilder.Entity("TagTransaction", b =>
                 {
-                    b.Property<string>("TagId")
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                    b.HasOne("ZenMoneyPlus.Data.Entities.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<string>("TransactionId")
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("TagId", "TransactionId");
-
-                    b.HasIndex("TransactionId");
-
-                    b.ToTable("TransactionTags");
+                    b.HasOne("ZenMoneyPlus.Data.Entities.Transaction", null)
+                        .WithMany()
+                        .HasForeignKey("TransactionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Receipt", b =>
@@ -274,7 +390,7 @@ namespace ZenMoneyPlus.Migrations
             modelBuilder.Entity("ZenMoneyPlus.Data.Entities.ReceiptItem", b =>
                 {
                     b.HasOne("ZenMoneyPlus.Data.Entities.Receipt", "Receipt")
-                        .WithMany("ReceiptItems")
+                        .WithMany("Items")
                         .HasForeignKey("ReceiptId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -291,42 +407,34 @@ namespace ZenMoneyPlus.Migrations
                     b.Navigation("ParentTag");
                 });
 
-            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.TransactionTag", b =>
+            modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Transaction", b =>
                 {
-                    b.HasOne("ZenMoneyPlus.Data.Entities.Tag", "Tag")
-                        .WithMany("TransactionTags")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("ZenMoneyPlus.Data.Entities.Account", "IncomeAccount")
+                        .WithMany()
+                        .HasForeignKey("IncomeAccountId");
 
-                    b.HasOne("ZenMoneyPlus.Data.Entities.Transaction", "Transaction")
-                        .WithMany("TransactionTags")
-                        .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("ZenMoneyPlus.Data.Entities.Account", "OutcomeAccount")
+                        .WithMany()
+                        .HasForeignKey("OutcomeAccountId");
 
-                    b.Navigation("Tag");
+                    b.Navigation("IncomeAccount");
 
-                    b.Navigation("Transaction");
+                    b.Navigation("OutcomeAccount");
                 });
 
             modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Receipt", b =>
                 {
-                    b.Navigation("ReceiptItems");
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Tag", b =>
                 {
                     b.Navigation("ChildrenTags");
-
-                    b.Navigation("TransactionTags");
                 });
 
             modelBuilder.Entity("ZenMoneyPlus.Data.Entities.Transaction", b =>
                 {
                     b.Navigation("Receipt");
-
-                    b.Navigation("TransactionTags");
                 });
 #pragma warning restore 612, 618
         }

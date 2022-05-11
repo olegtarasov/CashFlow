@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using NodaTime;
+
 namespace ZenMoneyPlus.Data.Entities;
 
 public class Tag : EntityBase
@@ -11,9 +14,11 @@ public class Tag : EntityBase
     public string? Title { get; set; }
     public bool ShowIncome { get; set; }
     public bool ShowOutcome { get; set; }
+    
     public string? Parent { get; set; }
-
     public virtual Tag? ParentTag { get; set; }
+
     public virtual List<Tag> ChildrenTags { get; set; } = new();
-    public virtual List<TransactionTag> TransactionTags { get; set; } = new();
+    
+    public virtual List<Transaction> Transactions { get; set; } = new();
 }

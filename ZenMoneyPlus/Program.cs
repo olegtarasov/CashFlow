@@ -8,6 +8,7 @@ using ZenMoneyPlus.Clients;
 using ZenMoneyPlus.Data;
 using ZenMoneyPlus.Data.Entities;
 using ZenMoneyPlus.Helpers;
+using ZenMoneyPlus.Models;
 using ZenMoneyPlus.Services;
 
 LoggerConfig.ConfigureSerilog(false, Debugger.IsAttached ? ConsoleMode.System : ConsoleMode.Colored);
@@ -20,14 +21,13 @@ services.AddDbContext<ZenContext>();
 services.AddTransient<ZenClient>();
 services.AddAutoMapper(cfg =>
                        {
-                           cfg.CreateMap<Tag, Tag>()
-                              .ForMember(x => x.ChildrenTags, m => m.Ignore())
-                              .ForMember(x => x.ParentTag, m => m.Ignore())
-                              .ForMember(x => x.TransactionTags, m => m.Ignore());
-
-                           cfg.CreateMap<Transaction, Transaction>()
-                              .ForMember(x => x.Tag, m => m.Ignore())
-                              .ForMember(x => x.TransactionTags, m => m.Ignore());
+                           cfg.CreateMap<AccountModel, Account>();
+                           cfg.CreateMap<TransactionModel, Transaction>()
+                              .ForMember(x => x.IncomeAccount, x => x.Ignore())
+                              .ForMember(x => x.OutcomeAccount, x => x.Ignore());
+                           cfg.CreateMap<TagModel, Tag>();
+                           cfg.CreateMap<ReceiptModel, Receipt>();
+                           cfg.CreateMap<ReceiptItemModel, ReceiptItem>();
                        });
 
 var registrar = new TypeRegistrar(services);

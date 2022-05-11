@@ -9,6 +9,42 @@ namespace ZenMoneyPlus.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Accounts",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Instrument = table.Column<int>(type: "INTEGER", nullable: false),
+                    Type = table.Column<int>(type: "INTEGER", nullable: false),
+                    Role = table.Column<string>(type: "TEXT", nullable: true),
+                    Private = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Savings = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    InBalance = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreditLimit = table.Column<decimal>(type: "TEXT", nullable: false),
+                    StartBalance = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Balance = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Company = table.Column<string>(type: "TEXT", nullable: true),
+                    Archive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    EnableCorrection = table.Column<bool>(type: "INTEGER", nullable: false),
+                    BalanceCorrectionType = table.Column<string>(type: "TEXT", nullable: true),
+                    StartDate = table.Column<string>(type: "TEXT", nullable: true),
+                    Capitalization = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Percent = table.Column<decimal>(type: "TEXT", nullable: true),
+                    SyncId = table.Column<string>(type: "TEXT", nullable: true),
+                    EnableSms = table.Column<bool>(type: "INTEGER", nullable: false),
+                    EndDateOffset = table.Column<int>(type: "INTEGER", nullable: true),
+                    EndDateOffsetInterval = table.Column<string>(type: "TEXT", nullable: true),
+                    PayoffStep = table.Column<int>(type: "INTEGER", nullable: true),
+                    PayoffInterval = table.Column<string>(type: "TEXT", nullable: true),
+                    User = table.Column<long>(type: "INTEGER", nullable: false),
+                    Changed = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accounts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Settings",
                 columns: table => new
                 {
@@ -36,7 +72,7 @@ namespace ZenMoneyPlus.Migrations
                     ShowOutcome = table.Column<bool>(type: "INTEGER", nullable: false),
                     Parent = table.Column<string>(type: "TEXT", nullable: true),
                     User = table.Column<long>(type: "INTEGER", nullable: false),
-                    Changed = table.Column<long>(type: "INTEGER", nullable: false)
+                    Changed = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,18 +89,17 @@ namespace ZenMoneyPlus.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Income = table.Column<decimal>(type: "TEXT", nullable: true),
-                    Outcome = table.Column<decimal>(type: "TEXT", nullable: true),
+                    Date = table.Column<string>(type: "TEXT", nullable: false),
+                    Income = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Outcome = table.Column<decimal>(type: "TEXT", nullable: false),
                     IncomeInstrument = table.Column<long>(type: "INTEGER", nullable: false),
                     OutcomeInstrument = table.Column<long>(type: "INTEGER", nullable: false),
-                    Created = table.Column<long>(type: "INTEGER", nullable: false),
+                    Created = table.Column<string>(type: "TEXT", nullable: false),
                     OriginalPayee = table.Column<string>(type: "TEXT", nullable: true),
                     Deleted = table.Column<bool>(type: "INTEGER", nullable: false),
                     Viewed = table.Column<bool>(type: "INTEGER", nullable: false),
                     Hold = table.Column<bool>(type: "INTEGER", nullable: true),
                     QrCode = table.Column<string>(type: "TEXT", nullable: true),
-                    IncomeAccount = table.Column<string>(type: "TEXT", nullable: true),
-                    OutcomeAccount = table.Column<string>(type: "TEXT", nullable: true),
                     Comment = table.Column<string>(type: "TEXT", nullable: true),
                     Payee = table.Column<string>(type: "TEXT", nullable: true),
                     OpIncome = table.Column<decimal>(type: "TEXT", nullable: true),
@@ -78,12 +113,24 @@ namespace ZenMoneyPlus.Migrations
                     OutcomeBankId = table.Column<string>(type: "TEXT", nullable: true),
                     ReminderMarker = table.Column<string>(type: "TEXT", nullable: true),
                     GetReceiptFailed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IncomeAccountId = table.Column<string>(type: "TEXT", nullable: true),
+                    OutcomeAccountId = table.Column<string>(type: "TEXT", nullable: true),
                     User = table.Column<long>(type: "INTEGER", nullable: false),
-                    Changed = table.Column<long>(type: "INTEGER", nullable: false)
+                    Changed = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Transactions_Accounts_IncomeAccountId",
+                        column: x => x.IncomeAccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Transactions_Accounts_OutcomeAccountId",
+                        column: x => x.OutcomeAccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -93,12 +140,13 @@ namespace ZenMoneyPlus.Migrations
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Sum = table.Column<decimal>(type: "TEXT", nullable: true),
-                    Date = table.Column<string>(type: "TEXT", nullable: true),
-                    Time = table.Column<string>(type: "TEXT", nullable: true),
+                    Date = table.Column<string>(type: "TEXT", nullable: false),
+                    Time = table.Column<string>(type: "TEXT", nullable: false),
                     Payee = table.Column<string>(type: "TEXT", nullable: true),
                     Address = table.Column<string>(type: "TEXT", nullable: true),
                     CardSum = table.Column<decimal>(type: "TEXT", nullable: true),
                     CashSum = table.Column<decimal>(type: "TEXT", nullable: true),
+                    Inn = table.Column<string>(type: "TEXT", nullable: true),
                     TransactionId = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -113,24 +161,24 @@ namespace ZenMoneyPlus.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TransactionTags",
+                name: "TagTransaction",
                 columns: table => new
                 {
-                    TagId = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    TransactionId = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false)
+                    TagsId = table.Column<string>(type: "TEXT", nullable: false),
+                    TransactionsId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TransactionTags", x => new { x.TagId, x.TransactionId });
+                    table.PrimaryKey("PK_TagTransaction", x => new { x.TagsId, x.TransactionsId });
                     table.ForeignKey(
-                        name: "FK_TransactionTags_Tags_TagId",
-                        column: x => x.TagId,
+                        name: "FK_TagTransaction_Tags_TagsId",
+                        column: x => x.TagsId,
                         principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TransactionTags_Transactions_TransactionId",
-                        column: x => x.TransactionId,
+                        name: "FK_TagTransaction_Transactions_TransactionsId",
+                        column: x => x.TransactionsId,
                         principalTable: "Transactions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -176,9 +224,19 @@ namespace ZenMoneyPlus.Migrations
                 column: "Parent");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TransactionTags_TransactionId",
-                table: "TransactionTags",
-                column: "TransactionId");
+                name: "IX_TagTransaction_TransactionsId",
+                table: "TagTransaction",
+                column: "TransactionsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_IncomeAccountId",
+                table: "Transactions",
+                column: "IncomeAccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_OutcomeAccountId",
+                table: "Transactions",
+                column: "OutcomeAccountId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -190,7 +248,7 @@ namespace ZenMoneyPlus.Migrations
                 name: "Settings");
 
             migrationBuilder.DropTable(
-                name: "TransactionTags");
+                name: "TagTransaction");
 
             migrationBuilder.DropTable(
                 name: "Receipts");
@@ -200,6 +258,9 @@ namespace ZenMoneyPlus.Migrations
 
             migrationBuilder.DropTable(
                 name: "Transactions");
+
+            migrationBuilder.DropTable(
+                name: "Accounts");
         }
     }
 }

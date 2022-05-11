@@ -15,7 +15,7 @@ public class ZenContext : DbContext
 
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<Tag> Tags { get; set; }
-    public DbSet<TransactionTag> TransactionTags { get; set; }
+    public DbSet<Account> Accounts { get; set; }
     public DbSet<Setting> Settings { get; set; }
     public DbSet<Receipt> Receipts { get; set; }
     public DbSet<ReceiptItem> ReceiptItems { get; set; }
@@ -25,22 +25,13 @@ public class ZenContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Tag>()
-                    .HasOne<Tag>(x => x.ParentTag)
+                    .HasOne(x => x.ParentTag)
                     .WithMany(x => x.ChildrenTags)
                     .HasForeignKey(x => x.Parent);
             
-        modelBuilder.Entity<TransactionTag>()
-                    .HasKey(x => new {x.TagId, x.TransactionId});
-
-        modelBuilder.Entity<ReceiptItem>()
-                    .HasOne(x => x.Receipt)
-                    .WithMany(x => x.ReceiptItems)
-                    .HasForeignKey(x => x.ReceiptId);
-
-        modelBuilder.Entity<Receipt>()
-                    .HasOne(x => x.Transaction)
-                    .WithOne(x => x.Receipt)
-                    .HasForeignKey<Receipt>(x => x.TransactionId);
+        modelBuilder.Entity<Transaction>()
+                    .HasMany(x => x.Tags)
+                    .WithMany(x => x.Transactions);
 
         // modelBuilder.Entity<TransactionTag>()
         //     .HasOne(tt => tt.Tag)
@@ -55,6 +46,6 @@ public class ZenContext : DbContext
 
         options
             .UseLazyLoadingProxies()
-            .UseSqlite("Data Source=data.db");
+            .UseSqlite("Data Source=data.db", x => x.UseNodaTime());
     }
 }

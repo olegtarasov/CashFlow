@@ -7,6 +7,7 @@ using Serilog;
 using ZenMoneyPlus.Data.Entities;
 using ZenMoneyPlus.Helpers;
 using ZenMoneyPlus.Messages;
+using ZenMoneyPlus.Models;
 using ZenMoneyPlus.Services;
 
 namespace ZenMoneyPlus.Clients;
@@ -45,12 +46,12 @@ public class ZenClient
         return resopnse.Data ?? throw new InvalidOperationException("Response object is null");
     }
 
-    public async Task<Receipt?> GetReceipt(string qrCode)
+    public async Task<ReceiptModel?> GetReceipt(string qrCode)
     {
         var request = await CreateRequest("parse_qr_code");
         request.AddJsonBody(new { code = qrCode });
         
-        var response = await Client.ExecuteAsync<Receipt>(request);
+        var response = await Client.ExecuteAsync<ReceiptModel>(request);
         if (!response.IsSuccessful)
             return null;
         
