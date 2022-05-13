@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenMoneyPlus", "ZenMoneyPlus\ZenMoneyPlus.csproj", "{4C3155E4-974B-414B-8D24-5380AB88DB06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenMoneyPlus.Web", "ZenMoneyPlus.Web\ZenMoneyPlus.Web.csproj", "{B3BCA56B-9B6D-4ECE-BA57-F1F7C8F9FA87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{4C3155E4-974B-414B-8D24-5380AB88DB06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C3155E4-974B-414B-8D24-5380AB88DB06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C3155E4-974B-414B-8D24-5380AB88DB06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3BCA56B-9B6D-4ECE-BA57-F1F7C8F9FA87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3BCA56B-9B6D-4ECE-BA57-F1F7C8F9FA87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3BCA56B-9B6D-4ECE-BA57-F1F7C8F9FA87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3BCA56B-9B6D-4ECE-BA57-F1F7C8F9FA87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
