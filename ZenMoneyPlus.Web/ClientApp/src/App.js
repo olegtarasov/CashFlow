@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import React, {Component} from 'react';
+import {Route, Routes} from 'react-router-dom';
+import Layout from './components/Layout';
+import {Home} from './components/Home';
+import {FetchData} from './components/FetchData';
+import {Counter} from './components/Counter';
+import {NavMenu} from "./components/NavMenu";
 
 // export function App() {
 //     const errorState = useErrorState();
@@ -32,19 +33,14 @@ import { Counter } from './components/Counter';
 //     );
 // }
 //
-
-export default class App extends Component {
-  static displayName = App.name;
-
-  render () {
+export default function App() {
     return (
-      <Layout>
-          <Routes>
-            <Route exact path='/' element={<Home/>}/>
-            <Route path='/counter' element={<Counter/>}/>
-            <Route path='/fetch-data' element={<FetchData/>}/>
-          </Routes>
-      </Layout>
-    );
-  }
+        <Routes>
+            <Route exact path='/' element={<Layout/>}>
+                <Route index element={<Home/>}/>
+                <Route path='/counter' element={<Counter/>}/>
+                <Route path='/fetch-data' element={<FetchData/>}/>
+            </Route>
+        </Routes>
+    )
 }
