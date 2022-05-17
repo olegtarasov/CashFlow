@@ -36,7 +36,7 @@ public class ZenService
         if (data.Tag != null && data.Tag.Length > 0)
         {
             _log.LogInformation("Updating local categories");
-            await PullCategories(data.Tag);
+            await PullTags(data.Tag);
         }
 
         if (data.Account != null && data.Account.Length > 0)
@@ -107,20 +107,20 @@ public class ZenService
         await _context.SaveChangesAsync();
     }
 
-    private async Task PullCategories(TagModel[] tags)
+    private async Task PullTags(TagModel[] tags)
     {
         foreach (var tag in tags)
         {
             var dbTag = await _context.Tags.FindAsync(tag.Id);
             if (dbTag == null)
             {
-                _log.LogInformation("Creating category {Title} ({Id})", tag.Title, tag.Id);
+                _log.LogInformation("Creating tag {Title} ({Id})", tag.Title, tag.Id);
                 dbTag = _mapper.Map<Tag>(tag);
                 await _context.Tags.AddAsync(dbTag);
             }
             else
             {
-                _log.LogInformation("Updating category {Title} ({Id})", tag.Title, tag.Id);
+                _log.LogInformation("Updating tag {Title} ({Id})", tag.Title, tag.Id);
                 _mapper.Map(tag, dbTag);
             }
         }

@@ -3,7 +3,7 @@
     "ZenMoneyPlus.Web": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "/",
+      "launchUrl": "",
       "applicationUrl": "https://localhost:7092;http://localhost:5120",
       "workingDirectory": "$(SolutionDir)",
       "environmentVariables": {

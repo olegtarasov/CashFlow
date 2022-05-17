@@ -1,9 +1,14 @@
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using ZenMoneyPlus.Data;
+using ZenMoneyPlus.Helpers;
+
+LoggerConfig.ConfigureSerilog(false, Debugger.IsAttached ? ConsoleMode.System : ConsoleMode.Colored);
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Host.UseSerilog();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ZenContext>();

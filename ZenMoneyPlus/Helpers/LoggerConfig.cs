@@ -36,7 +36,8 @@ public static class LoggerConfig
     private const string FileTemplate =
         "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}][{SourceContext}] {Message:lj}{NewLine}{Exception}";
 
-    private const string ConsoleTemplate = "{Timestamp:HH:mm:ss} [{Level:u4}] {Message:lj}{NewLine}{Exception}";
+    private const string ConsoleTemplate =
+        "{Timestamp:HH:mm:ss} [{Level:u4}][{SourceContext}] {Message:lj}{NewLine}{Exception}";
 
     private static readonly object Locker = new();
 
@@ -74,7 +75,8 @@ public static class LoggerConfig
                 config = config.MinimumLevel.ControlledBy(levelSwitch);
             else
                 config = config.MinimumLevel.Is(level)
-                               .MinimumLevel.Override("Microsoft", LogEventLevel.Warning);
+                               .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                               .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning);
 
             config = config
                      .Enrich.FromLogContext()
