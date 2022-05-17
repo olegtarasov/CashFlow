@@ -26,11 +26,6 @@ public class ZenService
         _mapper = mapper;
     }
 
-    public async Task MigrateDatabase()
-    {
-        await _context.Database.MigrateAsync();
-    }
-
     public async Task Sync()
     {
         long timestamp = await GetLocalTimestamp();
@@ -105,7 +100,7 @@ public class ZenService
             {
                 _mapper.Map(account, dbAccount);
             }
-            
+
             _log.LogInformation("Processing account {AccountId}", account.Id);
         }
 
@@ -166,7 +161,7 @@ public class ZenService
                     dbTrans.Tags.Add(await FindExpectedEntity<Tag>(tagId));
                 }
             }
-            
+
             // Link accounts
             if (!string.IsNullOrEmpty(transaction.IncomeAccount))
             {

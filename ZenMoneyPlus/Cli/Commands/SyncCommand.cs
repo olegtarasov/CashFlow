@@ -17,8 +17,6 @@ public class SyncCommand : AsyncCommand<SyncSettings>
 
     public override async Task<int> ExecuteAsync(CommandContext context, SyncSettings settings)
     {
-        await _zenService.MigrateDatabase();
-        
         if (!string.IsNullOrEmpty(settings.Token))
         {
             await _tokenProvider.UpdateToken(settings.Token);

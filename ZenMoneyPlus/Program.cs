@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Spectre.Console.Cli;
@@ -33,6 +34,11 @@ services.AddAutoMapper(cfg =>
 var registrar = new TypeRegistrar(services);
 
 var logger = Log.ForContext<Program>();
+
+logger.Information("Migrating database");
+var ctx = new ZenContext();
+await ctx.Database.MigrateAsync();
+
 var app = new CommandApp(registrar);
 
 app.Configure(config =>

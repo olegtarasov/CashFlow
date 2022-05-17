@@ -1,49 +1,28 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import {Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink} from 'reactstrap';
 import {Link} from 'react-router-dom';
 
-export class NavMenu extends Component {
-    static displayName = NavMenu.name;
+export function NavMenu() {
+    const [isOpen, setIsOpen] = useState(false);
 
-    constructor(props) {
-        super(props);
+    const toggle = () => setIsOpen(!isOpen);
 
-        this.toggleNavbar = this.toggleNavbar.bind(this);
-        this.state = {
-            collapsed: true
-        };
-    }
-
-    toggleNavbar() {
-        this.setState({
-            collapsed: !this.state.collapsed
-        });
-    }
-
-    render() {
-        return (
-            <header>
-                <Container>
-                    <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
-                        <NavbarBrand tag={Link} to="/">ZenMoneyPlus.Web</NavbarBrand>
-                        <NavbarToggler onClick={this.toggleNavbar} className="mr-2"/>
-                        <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed}
-                                  navbar>
-                            <ul className="navbar-nav flex-grow">
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-                                </NavItem>
-                            </ul>
-                        </Collapse>
-                    </Navbar>
-                </Container>
-            </header>
-        );
-    }
+    return (
+        <header>
+            <Container>
+                <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
+                    <NavbarBrand tag={Link} to="/">ZenMoneyPlus</NavbarBrand>
+                    <NavbarToggler onClick={toggle} className="mr-2"/>
+                    <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={isOpen}
+                              navbar>
+                        <ul className="navbar-nav flex-grow">
+                            <NavItem>
+                                <NavLink tag={Link} className="text-dark" to="/">Monthly spending</NavLink>
+                            </NavItem>
+                        </ul>
+                    </Collapse>
+                </Navbar>
+            </Container>
+        </header>
+    );
 }

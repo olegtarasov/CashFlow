@@ -17,8 +17,6 @@ public class ReceiptsCommand : AsyncCommand<ReceptsSettings>
 
     public override async Task<int> ExecuteAsync(CommandContext context, ReceptsSettings settings)
     {
-        await _zenService.MigrateDatabase();
-
         if (!string.IsNullOrEmpty(settings.Token))
         {
             await _tokenProvider.UpdateToken(settings.Token);
@@ -26,6 +24,6 @@ public class ReceiptsCommand : AsyncCommand<ReceptsSettings>
 
         await _zenService.GetMissingReceipts();
 
-        return 0;    
+        return 0;
     }
 }
