@@ -6,17 +6,17 @@ namespace ZenMoneyPlus.Web.Controllers;
 
 [ApiController]
 [Route("/api/[controller]")]
-public class MonthlyController : ControllerBase
+public class SpendingController : ControllerBase
 {
     private readonly ZenContext _context;
 
-    public MonthlyController(ZenContext context)
+    public SpendingController(ZenContext context)
     {
         _context = context;
     }
 
     [HttpPost]
-    public async Task<MontlyResponse> GetMonthlyData(MontlyRequest request)
+    public async Task<MontlyResponse> GetSpendingData(MontlyRequest request)
     {
         return new();
     }

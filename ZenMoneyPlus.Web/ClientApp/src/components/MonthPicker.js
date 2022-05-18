@@ -25,7 +25,7 @@ function MonthPicker({onChange, initialRange}) {
     return (
         <Picker
             ref={monthPicker}
-            value={monthRange}
+            value={initialRange}
             lang={pickerLang}
             onDismiss={handleChange}
             years={5}
