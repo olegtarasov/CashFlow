@@ -6563,6 +6563,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"highcharts-react-official@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "highcharts-react-official@npm:3.1.0"
+  peerDependencies:
+    highcharts: ">=6.0.0"
+    react: ">=16.8.0"
+  checksum: 13ea12e8f778d4b7dac735082b6f36ed3c852b7c31823812ba42ea78e72ce21b90e62daf0a2bc35bb6db07705a9f19cf7b21c03455c6f3fb14e7cab8d35b0ecf
+  languageName: node
+  linkType: hard
+
+"highcharts@npm:^10.1.0":
+  version: 10.1.0
+  resolution: "highcharts@npm:10.1.0"
+  checksum: 62b5e5ce33b93d31f18a1dc3192defa77aa12b19ee1809723bb4e206385e0ae7dbe31f2e4f8c4dc683c87550a9dcdd5ee760f3862845bfd2ca271ca0b54f4dd1
+  languageName: node
+  linkType: hard
+
 "history@npm:^5.2.0":
   version: 5.3.0
   resolution: "history@npm:5.3.0"
@@ -10330,7 +10347,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.5.8, prop-types@npm:^15.6.2, prop-types@npm:^15.8.1":
+"prop-types@npm:*, prop-types@npm:^15.5.8, prop-types@npm:^15.6.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -10547,6 +10564,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-month-picker@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "react-month-picker@npm:2.2.1"
+  dependencies:
+    react-tapper: ^0.1.23
+  peerDependencies:
+    prop-types: ^15.6.0
+    react: ^17.0.2
+    react-dom: ^17.0.2
+  checksum: 88e3b161c18b6a63b9b6a651895e0bc0c296654374dfd7f88897f1e06f469ee2353b7425c3338c661a155a561201417ff720600cb9276e6c475e402a1abf98d3
+  languageName: node
+  linkType: hard
+
 "react-popper@npm:^2.2.4":
   version: 2.3.0
   resolution: "react-popper@npm:2.3.0"
@@ -10656,6 +10686,17 @@ __metadata:
   bin:
     react-scripts: bin/react-scripts.js
   checksum: 92afa2f245c7092ccc97d5609dc7a2130616262e34da7f15072d9442e2d2e1d4909a91022abd1faac1336eb17c5525a10d9bd43e1ae374c7ec941ca20addca68
+  languageName: node
+  linkType: hard
+
+"react-tapper@npm:^0.1.23":
+  version: 0.1.23
+  resolution: "react-tapper@npm:0.1.23"
+  peerDependencies:
+    prop-types: ^15.6.0
+    react: ^17.0.2
+    react-dom: ^17.0.2
+  checksum: 867685a289a61eb1b87989d1f2e782ba0770881b972034b480cc646bc2525acd9a52ed1ff68d305906fc31ecc427cb8b8ca0537bfc6f442168d786e4e6758c9c
   languageName: node
   linkType: hard
 
@@ -13207,12 +13248,15 @@ __metadata:
     eslint-config-react-app: ^7.0.1
     eslint-plugin-react: ^7.29.4
     eslint-plugin-react-hooks: ^4.5.0
+    highcharts: ^10.1.0
+    highcharts-react-official: ^3.1.0
     http-proxy-middleware: ^0.19.1
     lodash: ^4.17.21
     prettier: ^2.6.2
     react: ^18.1.0
     react-dom: ^18.1.0
     react-dropdown-tree-select: ^2.7.1
+    react-month-picker: ^2.2.1
     react-router-dom: ^6.3.0
     react-scripts: ^5.0.1
     reactstrap: ^9.0.2
