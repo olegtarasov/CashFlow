@@ -1,29 +1,21 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useErrorContext} from "../context/errorContext";
 import axios from "axios";
-import Picker from 'react-month-picker';
-import "react-month-picker/css/month-picker.css";
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 import 'react-dropdown-tree-select/dist/styles.css';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import {Button} from "reactstrap";
-
-const pickerLang = {
-    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    from: 'From', to: 'To',
-}
+import {SpendingFilter} from "../components/SpendingFilter";
+import {Container, Row} from "reactstrap";
 
 function mapTag(tag) {
     return {label: tag.title, value: tag.id, children: tag.childrenTags.map(mapTag), checked: true};
 }
 
-export function MontlySpending() {
+export function Spending() {
     const errorContext = useErrorContext();
     const [tags, setTags] = useState({});
     const [selectedTags, setSelectedTags] = useState([]);
-    const [monthRange, setMonthRange] = useState({from: {year: 2019, month: 1}, to: {year: 2022, month: 12}});
-    const monthPicker = useRef();
     const [barOptions, setBarOptions] = useState({
         chart: {
             type: 'column'
@@ -89,16 +81,9 @@ export function MontlySpending() {
 
     return (
         <>
-            <Picker
-                ref={monthPicker}
-                value={monthRange}
-                theme="light"
-                lang={pickerLang}
-            >
-                <Button onClick={() => monthPicker.current.show()}>Foobar</Button>
-            </Picker>
-            <DropdownTreeSelect data={tags} onChange={onSelectedTagsChange}/>
-            <HighchartsReact highcharts={Highcharts} options={barOptions}/>
+            <SpendingFilter/>
+            <DropdownTreeSelect className="my-2" data={tags} onChange={onSelectedTagsChange}/>
+            <HighchartsReact className="my-2" highcharts={Highcharts} options={barOptions}/>
         </>
     );
 }

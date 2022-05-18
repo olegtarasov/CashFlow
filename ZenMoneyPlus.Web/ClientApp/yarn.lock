@@ -13253,6 +13253,7 @@ __metadata:
     http-proxy-middleware: ^0.19.1
     lodash: ^4.17.21
     prettier: ^2.6.2
+    prop-types: ^15.8.1
     react: ^18.1.0
     react-dom: ^18.1.0
     react-dropdown-tree-select: ^2.7.1

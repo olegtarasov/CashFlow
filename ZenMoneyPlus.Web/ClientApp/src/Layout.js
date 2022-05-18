@@ -1,8 +1,8 @@
 import React from 'react';
 import {Outlet} from "react-router-dom";
 import {Container} from 'reactstrap';
-import {NavMenu} from './NavMenu';
-import {ErrorAlert} from "./ErrorAlert";
+import {NavMenu} from './components/NavMenu';
+import {ErrorAlert} from "./components/ErrorAlert";
 
 export function Layout() {
     return (

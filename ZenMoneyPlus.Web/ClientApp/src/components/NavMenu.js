@@ -17,7 +17,7 @@ export function NavMenu() {
                               navbar>
                         <ul className="navbar-nav flex-grow">
                             <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/">Monthly spending</NavLink>
+                                <NavLink tag={Link} className="text-dark" to="/">Spending</NavLink>
                             </NavItem>
                         </ul>
                     </Collapse>
