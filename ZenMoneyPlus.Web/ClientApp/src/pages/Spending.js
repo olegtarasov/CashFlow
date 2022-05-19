@@ -8,6 +8,11 @@ import {TagSelector} from "../components/TagSelector";
 
 export function Spending() {
     const errorContext = useErrorContext();
+    const [request, setRequest] = useState({
+        mode: "month",
+        monthRange: {from: {year: 2019, month: 1}, to: {year: 2022, month: 12}},
+        tags: []
+    });
     const [barOptions, setBarOptions] = useState({
         chart: {
             type: 'column'
@@ -39,23 +44,27 @@ export function Spending() {
         series: []
     });
 
-    // useEffect(() => {
-    //     if (selectedTags.length === 0)
-    //         return;
-    //
-    //     axios.post("api/Spending", {tags: selectedTags})
-    //         .then(response => {
-    //
-    //         })
-    //         .catch(error => {
-    //             errorContext.processError(error);
-    //         });
-    // }, [selectedTags, errorContext]);
+    useEffect(() => {
+        if (request.tags.length === 0)
+            return;
 
+        axios.post("api/Spending", request)
+            .then(response => {
+                setBarOptions({
+                    xAxis: {
+                        categories: response.data.categories
+                    },
+                    series: response.data.series
+                });
+            })
+            .catch(error => {
+                errorContext.processError(error);
+            });
+    }, [request, errorContext]);
 
     return (
         <>
-            <SpendingFilter/>
+            <SpendingFilter onChange={(req) => setRequest(req)} request={request}/>
             <HighchartsReact className="my-2" highcharts={Highcharts} options={barOptions}/>
         </>
     );

@@ -1,5 +1,5 @@
 import {createContext, useState, useContext} from 'react'
-import {isString, has} from "lodash"
+import {isString, has, toString} from "lodash"
 
 export const ErrorContext = createContext({});
 
@@ -11,10 +11,10 @@ export function useErrorState() {
             return;
         if (isString(error))
             setErrorText(error);
-        else if (has(error, "response.data.detail"))
-            setErrorText(error.response.data.detail);
+        else if (has(error, "response.data.errors"))
+            setErrorText(JSON.stringify(error.response.data.errors));
         else
-            setErrorText(String(error));
+            setErrorText(JSON.stringify(error));
     }
 
     return {errorText, processError}

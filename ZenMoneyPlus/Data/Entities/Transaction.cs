@@ -5,6 +5,13 @@ using NodaTime;
 
 namespace ZenMoneyPlus.Data.Entities;
 
+public enum TransactionType
+{
+    Income,
+    Outcome,
+    Transfer
+}
+
 public class Transaction : EntityBase
 {
     public LocalDate Date { get; init; }
@@ -37,18 +44,25 @@ public class Transaction : EntityBase
     public virtual Account? IncomeAccount { get; set; }
     public virtual Account? OutcomeAccount { get; set; }
 
+    [NotMapped]
+    public decimal Amount => Income != 0 ? Income : Outcome;
+
+    [NotMapped]
+    public bool IsInBalance => IncomeAccount?.InBalance == true || OutcomeAccount?.InBalance == true;
+
+    [NotMapped]
+    public TransactionType Type => (Income != 0 && Outcome != 0)
+                                       ? TransactionType.Transfer
+                                       : Income == 0
+                                           ? TransactionType.Outcome
+                                           : TransactionType.Income;
+
     public override string ToString()
     {
-        string? op = null;
-        if (Income != 0 && Outcome != 0)
-            op = "T";
+        string tags = Tags.Count > 0
+                          ? Tags.Where(x => x.Title != null).Select(x => x.Title!).Aggregate((a, b) => a + ", " + b)
+                          : "";
 
-        op ??= Income == 0 ? "O" : "I";
-
-        decimal amount = Income != 0 ? Income : Outcome;
-
-        string tags = Tags.Count > 0 ? Tags.Where(x => x.Title != null).Select(x => x.Title!).Aggregate((a, b) => a + ", " + b) : "";
-        
-        return $"[{op}] {Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)} [{tags}] {amount}";
+        return $"[{Type.ToString()[0]}] {Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)} [{tags}] {Amount}";
     }
 }

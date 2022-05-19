@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using ZenMoneyPlus.Data;
@@ -9,6 +10,8 @@ LoggerConfig.ConfigureSerilog(false, Debugger.IsAttached ? ConsoleMode.System : 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
+
+builder.Services.Configure<JsonOptions>(options => { options.JsonSerializerOptions.ConfigureDefaultOptions(); });
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ZenContext>();

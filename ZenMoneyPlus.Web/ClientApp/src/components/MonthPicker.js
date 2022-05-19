@@ -10,16 +10,16 @@ const pickerLang = {
 }
 
 function MonthPicker({onChange, initialRange}) {
-    const [monthRange, setMonthRange] = useState(initialRange);
+    const [text, setText] = useState(formatRange(initialRange));
     const monthPicker = useRef();
 
     function handleChange(value) {
-        setMonthRange(value);
+        setText(formatRange(value));
         onChange(value);
     }
 
-    function formatRange() {
-        return `${monthRange.from.month}.${monthRange.from.year} — ${monthRange.to.month}.${monthRange.to.year}`;
+    function formatRange(value) {
+        return `${value.from.month}.${value.from.year} — ${value.to.month}.${value.to.year}`;
     }
 
     return (
@@ -30,7 +30,7 @@ function MonthPicker({onChange, initialRange}) {
             onDismiss={handleChange}
             years={5}
         >
-            <Input readOnly value={formatRange()} onClick={() => monthPicker.current.show()}
+            <Input readOnly value={text} onClick={() => monthPicker.current.show()}
                    style={{marginLeft: "-1px", borderTopLeftRadius: 0, borderBottomLeftRadius: 0}}/>
         </Picker>
     );

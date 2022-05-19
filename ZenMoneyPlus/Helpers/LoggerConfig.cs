@@ -76,7 +76,7 @@ public static class LoggerConfig
             else
                 config = config.MinimumLevel.Is(level)
                                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                               .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning);
+                               .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Information);
 
             config = config
                      .Enrich.FromLogContext()

@@ -6,7 +6,7 @@ import {useErrorContext} from "../context/errorContext";
 import axios from "axios";
 
 function mapTag(tag) {
-    return {label: tag.title, value: tag.id, children: tag.childrenTags.map(mapTag), checked: true};
+    return {id: tag.id, label: tag.title, value: tag.id, children: tag.childrenTags.map(mapTag), checked: true};
 }
 
 function TagSelector({onChange}) {
@@ -31,6 +31,10 @@ function TagSelector({onChange}) {
     });
 
     function onSelectedChange(current, selected) {
+        if (current) {
+            tags[tags.findIndex(x => x.id === current.id)] = current;
+            setTags(tags);
+        }
         onChange(selected.map(x => x.value));
     }
 
