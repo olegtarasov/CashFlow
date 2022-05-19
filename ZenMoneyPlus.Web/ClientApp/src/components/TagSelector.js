@@ -9,6 +9,14 @@ function mapTag(tag) {
     return {id: tag.id, label: tag.title, value: tag.id, children: tag.childrenTags.map(mapTag), checked: true};
 }
 
+function updateChecked(tags, selectedIds) {
+    tags.forEach(x => {
+        x.checked = selectedIds.includes(x.id);
+        if (x.children.length > 0)
+            updateChecked(x.children, selectedIds);
+    });
+}
+
 function TagSelector({onChange}) {
     const errorContext = useErrorContext();
     const [tags, setTags] = useState({});
@@ -32,7 +40,8 @@ function TagSelector({onChange}) {
 
     function onSelectedChange(current, selected) {
         if (current) {
-            tags[tags.findIndex(x => x.id === current.id)] = current;
+            const selectedIds = selected.map(x => x.id);
+            updateChecked(tags, selectedIds);
             setTags(tags);
         }
         onChange(selected.map(x => x.value));
