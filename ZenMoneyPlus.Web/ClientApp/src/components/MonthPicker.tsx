@@ -1,6 +1,5 @@
 import React, {useRef, useState} from 'react';
-import Picker from 'react-month-picker';
-import PropTypes from "prop-types";
+import Picker from "react-month-picker";
 import "react-month-picker/css/month-picker.css";
 import {Input} from "reactstrap";
 
@@ -9,16 +8,31 @@ const pickerLang = {
     from: 'From', to: 'To',
 }
 
-function MonthPicker({onChange, initialRange}) {
-    const [text, setText] = useState(formatRange(initialRange));
-    const monthPicker = useRef();
+export type MonthAndYear = {
+    month: number,
+    year: number
+};
 
-    function handleChange(value) {
+export type MonthRange = {
+    from: MonthAndYear,
+    to: MonthAndYear
+}
+
+export type MonthPickerProps = {
+    onChange: (value: MonthRange) => void,
+    initialRange: MonthRange
+}
+
+function MonthPicker({onChange, initialRange}: MonthPickerProps) {
+    const [text, setText] = useState(formatRange(initialRange));
+    const monthPicker = useRef<any>();
+
+    function handleChange(value: MonthRange) {
         setText(formatRange(value));
         onChange(value);
     }
 
-    function formatRange(value) {
+    function formatRange(value: MonthRange) {
         return `${value.from.month}.${value.from.year} — ${value.to.month}.${value.to.year}`;
     }
 
@@ -36,12 +50,12 @@ function MonthPicker({onChange, initialRange}) {
     );
 }
 
-MonthPicker.propTypes = {
-    onChange: PropTypes.func.isRequired,
-    initialRange: PropTypes.shape({
-        from: PropTypes.shape({year: PropTypes.number, month: PropTypes.number}),
-        to: PropTypes.shape({year: PropTypes.number, month: PropTypes.number})
-    }).isRequired
-};
+// MonthPicker.propTypes = {
+//     onChange: PropTypes.func.isRequired,
+//     initialRange: PropTypes.shape({
+//         from: PropTypes.shape({year: PropTypes.number, month: PropTypes.number}),
+//         to: PropTypes.shape({year: PropTypes.number, month: PropTypes.number})
+//     }).isRequired
+// };
 
 export {MonthPicker};

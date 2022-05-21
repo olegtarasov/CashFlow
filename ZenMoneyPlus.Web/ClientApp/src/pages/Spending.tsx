@@ -1,19 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useReducer, useState} from 'react';
 import {useErrorContext} from "../context/errorContext";
 import axios from "axios";
-import Highcharts from 'highcharts';
+import Highcharts, {Options} from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import {SpendingFilter} from "../components/SpendingFilter";
-import {TagSelector} from "../components/TagSelector";
+import {SpendingFilter, SpendingRequest, InitialSpendingRequest} from "../components/SpendingFilter";
 
 export function Spending() {
     const errorContext = useErrorContext();
-    const [request, setRequest] = useState({
-        mode: "month",
-        monthRange: {from: {year: 2019, month: 1}, to: {year: 2022, month: 12}},
-        tags: []
-    });
-    const [barOptions, setBarOptions] = useState({
+    const [request, setRequest] = useState<SpendingRequest>(InitialSpendingRequest);
+    const onRequestChanged = useCallback((req: SpendingRequest) => setRequest(req), []);
+    const [barOptions, setBarOptions] = useState<Options>({
         chart: {
             type: 'column'
         },
@@ -33,7 +29,7 @@ export function Spending() {
             formatter: function () {
                 return '<b>' + this.x + '</b><br/>' +
                     this.series.name + ': ' + this.y + '<br/>' +
-                    'Total: ' + this.point.stackTotal;
+                    'Total: ' + this.point.total;
             }
         },
         plotOptions: {
@@ -64,7 +60,7 @@ export function Spending() {
 
     return (
         <>
-            <SpendingFilter onChange={(req) => setRequest(req)} request={request}/>
+            <SpendingFilter onRequestChanged={onRequestChanged}/>
             <HighchartsReact className="my-2" highcharts={Highcharts} options={barOptions}/>
         </>
     );
