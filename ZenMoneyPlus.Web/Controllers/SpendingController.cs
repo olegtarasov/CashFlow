@@ -24,16 +24,28 @@ public class SpendingController : ControllerBase
     [HttpPost]
     public async Task<SpendingResponse> GetSpendingData([FromBody] SpendingRequest request)
     {
-        var data = await GetMonthData(request);
+        var data = request.Mode switch
+                   {
+                       SpendingMode.Month => await CalculateSpendingData(
+                                                 request, x => (x.Date.Month, x.Date.Year),
+                                                 x => $"{x.Month:D2}.{x.Year}"),
+                       SpendingMode.Year => await CalculateSpendingData(
+                                                request, x => x.Date.Year,
+                                                x => x.ToString()),
+                       _ => throw new ArgumentOutOfRangeException()
+                   };
+
         return data;
     }
 
-    private async Task<SpendingResponse> GetMonthData(SpendingRequest request)
+    private async Task<SpendingResponse> CalculateSpendingData<TGroupKey>(
+        SpendingRequest request,
+        Func<Transaction, TGroupKey> groupKey,
+        Func<TGroupKey, string> groupFormatter)
+        where TGroupKey : notnull
     {
         var tags = await GetTagsWithChildren(request.Tags);
-        var monthRange = request.MonthRange ?? throw new InvalidOperationException("Month range is not specified!");
-        var startDate = new LocalDate(monthRange.From.Year, monthRange.From.Month, 1);
-        var endDate = AdjsutEndDate(monthRange.To);
+        var (startDate, endDate) = GetDateRange(request);
 
         var allTransactions = await _context.Transactions
                                             .Include(x => x.Tags)
@@ -47,12 +59,12 @@ public class SpendingController : ControllerBase
                                                         x.Date < endDate)
                                             .ToArrayAsync();
 
-        var grouped = new SortedDictionary<LocalDate, Dictionary<Tag, List<Transaction>>>();
+        var grouped = new SortedDictionary<TGroupKey, Dictionary<Tag, List<Transaction>>>();
         var tagTotals = new Dictionary<Tag, decimal>();
-        foreach (var byMonth in allTransactions.GroupBy(x => (x.Date.Month, x.Date.Year)))
+        foreach (var group in allTransactions.GroupBy(groupKey))
         {
             var byTag = new Dictionary<Tag, List<Transaction>>();
-            foreach (var transaction in byMonth)
+            foreach (var transaction in group)
             {
                 var tag = transaction.Tags.Count > 0
                               ? transaction.Tags[0]
@@ -65,7 +77,7 @@ public class SpendingController : ControllerBase
                 tagTotals.AddOrUpdate(tag, () => transaction.Amount, cur => cur + transaction.Amount);
             }
 
-            grouped[new LocalDate(byMonth.Key.Year, byMonth.Key.Month, 1)] = byTag;
+            grouped[group.Key] = byTag;
         }
 
         var sortedTags = tagTotals.OrderBy(x => x.Value).Select(x => x.Key).ToArray();
@@ -85,7 +97,7 @@ public class SpendingController : ControllerBase
             series.Add(new(tag.Title ?? "???", totals));
         }
 
-        return new(grouped.Select(x => $"{x.Key.Month.ToString("D2")}.{x.Key.Year}").ToArray(), series.ToArray());
+        return new(grouped.Select(x => groupFormatter(x.Key)).ToArray(), series.ToArray());
     }
 
     private async Task<string[]> GetTagsWithChildren(string[] tags)
@@ -120,7 +132,24 @@ public class SpendingController : ControllerBase
         return ids.ToArray();
     }
 
-    private LocalDate AdjsutEndDate(MonthAndYear endMonth)
+    private (LocalDate, LocalDate) GetDateRange(SpendingRequest request)
+    {
+        if (request.Mode == SpendingMode.Month)
+        {
+            var monthRange = request.MonthRange ?? throw new InvalidOperationException("Month range is not specified");
+            return (new LocalDate(monthRange.From.Year, monthRange.From.Month, 1), AdjsutEndMonthRange(monthRange.To));
+        }
+
+        if (request.Mode == SpendingMode.Year)
+        {
+            var yearRange = request.YearRange ?? throw new InvalidOperationException("Year range is not specified");
+            return (new LocalDate(yearRange.From, 1, 1), new LocalDate(yearRange.To + 1, 1, 1));
+        }
+
+        throw new InvalidOperationException("Unknown display mode");
+    }
+
+    private LocalDate AdjsutEndMonthRange(MonthAndYear endMonth)
     {
         (int month, int year) = endMonth;
         if (month == 12)

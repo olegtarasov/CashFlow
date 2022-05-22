@@ -13,9 +13,12 @@ public record MonthAndYear(int Month, int Year);
 
 public record MonthRange(MonthAndYear From, MonthAndYear To);
 
+public record YearRange(int From, int To);
+
 public record SpendingRequest(
     [Required] SpendingMode Mode,
     MonthRange? MonthRange,
+    YearRange? YearRange,
     [Required] string[] Tags);
 
 public record SpendingSerie(string Name, decimal[] Data);

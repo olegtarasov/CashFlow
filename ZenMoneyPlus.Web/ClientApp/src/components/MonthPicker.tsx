@@ -1,23 +1,14 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import Picker from "react-month-picker";
 import "react-month-picker/css/month-picker.css";
 import {Input} from "reactstrap";
-import {INITIAL_SPENDING_REQUEST} from "../messages/Spending.Messages";
+import {INITIAL_SPENDING_REQUEST, MonthRange} from "../messages/Spending.Messages";
 
 const PICKER_LANG = {
     months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     from: 'From', to: 'To',
 }
 
-export interface MonthAndYear {
-    month: number;
-    year: number;
-}
-
-export interface MonthRange {
-    from: MonthAndYear;
-    to: MonthAndYear;
-}
 
 export interface MonthPickerProps {
     onChange: (value: MonthRange) => void;
