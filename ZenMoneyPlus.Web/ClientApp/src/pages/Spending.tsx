@@ -1,14 +1,14 @@
-import React, {useCallback, useEffect, useReducer, useState} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import {useErrorContext} from "../context/errorContext";
 import axios from "axios";
 import Highcharts, {Options} from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import {SpendingFilter, SpendingRequest, InitialSpendingRequest} from "../components/SpendingFilter";
+import {SpendingFilter} from "../components/SpendingFilter";
+import {INITIAL_SPENDING_REQUEST, spendingRequestReducer} from "../messages/Spending.Messages";
 
 export function Spending() {
     const errorContext = useErrorContext();
-    const [request, setRequest] = useState<SpendingRequest>(InitialSpendingRequest);
-    const onRequestChanged = useCallback((req: SpendingRequest) => setRequest(req), []);
+    const [request, requestDispatch] = useReducer(spendingRequestReducer, INITIAL_SPENDING_REQUEST);
     const [barOptions, setBarOptions] = useState<Options>({
         chart: {
             type: 'column'
@@ -60,7 +60,7 @@ export function Spending() {
 
     return (
         <>
-            <SpendingFilter onRequestChanged={onRequestChanged}/>
+            <SpendingFilter requestDispatch={requestDispatch} request={request}/>
             <HighchartsReact className="my-2" highcharts={Highcharts} options={barOptions}/>
         </>
     );

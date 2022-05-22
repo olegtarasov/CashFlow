@@ -4,10 +4,10 @@ import "react-dropdown-tree-select/dist/styles.css";
 import {useErrorContext} from "../context/errorContext";
 import axios from "axios";
 
-type Tag = {
-    id: string,
-    title: string,
-    childrenTags: Tag[]
+interface Tag {
+    id: string;
+    title: string;
+    childrenTags: Tag[];
 }
 
 function mapTag(tag: Tag): TreeNode {
@@ -15,15 +15,15 @@ function mapTag(tag: Tag): TreeNode {
 }
 
 function updateChecked(tags: TreeNode[], selectedIds: string[]) {
-    tags.forEach((x: TreeNode) => {
-        x.checked = selectedIds.includes(x.id);
-        if (x.children.length > 0)
-            updateChecked(x.children, selectedIds);
-    });
+    for (const tag of tags) {
+        tag.checked = selectedIds.includes(tag.id);
+        if (tag.children.length > 0)
+            updateChecked(tag.children, selectedIds);
+    }
 }
 
-export type TypeSelectorProps = {
-    onSelectedChanged: (tags: string[]) => void
+export interface TypeSelectorProps {
+    onSelectedChanged: (tags: string[]) => void;
 }
 
 export const TagSelector = React.memo(function TagSelector({onSelectedChanged}: TypeSelectorProps) {

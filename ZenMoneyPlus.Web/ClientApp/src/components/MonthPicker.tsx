@@ -1,30 +1,30 @@
-import React, {useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import Picker from "react-month-picker";
 import "react-month-picker/css/month-picker.css";
 import {Input} from "reactstrap";
+import {INITIAL_SPENDING_REQUEST} from "../messages/Spending.Messages";
 
-const pickerLang = {
+const PICKER_LANG = {
     months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     from: 'From', to: 'To',
 }
 
-export type MonthAndYear = {
-    month: number,
-    year: number
-};
-
-export type MonthRange = {
-    from: MonthAndYear,
-    to: MonthAndYear
+export interface MonthAndYear {
+    month: number;
+    year: number;
 }
 
-export type MonthPickerProps = {
-    onChange: (value: MonthRange) => void,
-    initialRange: MonthRange
+export interface MonthRange {
+    from: MonthAndYear;
+    to: MonthAndYear;
 }
 
-function MonthPicker({onChange, initialRange}: MonthPickerProps) {
-    const [text, setText] = useState(formatRange(initialRange));
+export interface MonthPickerProps {
+    onChange: (value: MonthRange) => void;
+}
+
+export const MonthPicker = React.memo(function MonthPicker({onChange}: MonthPickerProps) {
+    const [text, setText] = useState(formatRange(INITIAL_SPENDING_REQUEST.monthRange));
     const monthPicker = useRef<any>();
 
     function handleChange(value: MonthRange) {
@@ -39,8 +39,8 @@ function MonthPicker({onChange, initialRange}: MonthPickerProps) {
     return (
         <Picker
             ref={monthPicker}
-            value={initialRange}
-            lang={pickerLang}
+            value={INITIAL_SPENDING_REQUEST.monthRange}
+            lang={PICKER_LANG}
             onDismiss={handleChange}
             years={5}
         >
@@ -48,14 +48,4 @@ function MonthPicker({onChange, initialRange}: MonthPickerProps) {
                    style={{marginLeft: "-1px", borderTopLeftRadius: 0, borderBottomLeftRadius: 0}}/>
         </Picker>
     );
-}
-
-// MonthPicker.propTypes = {
-//     onChange: PropTypes.func.isRequired,
-//     initialRange: PropTypes.shape({
-//         from: PropTypes.shape({year: PropTypes.number, month: PropTypes.number}),
-//         to: PropTypes.shape({year: PropTypes.number, month: PropTypes.number})
-//     }).isRequired
-// };
-
-export {MonthPicker};
+});

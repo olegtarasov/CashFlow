@@ -1,61 +1,37 @@
-import React, {useCallback, useEffect, useReducer} from 'react';
+import React, {Dispatch, useCallback} from 'react';
 import {Button, Form, Input, InputGroup, InputGroupText} from "reactstrap";
 import {MonthPicker, MonthRange} from "./MonthPicker";
+import {SpendingRequest, SpendingRequestReduceAction} from '../messages/Spending.Messages';
 import {TagSelector} from "./TagSelector";
 
-export type SpendingMode = "month" | "year";
 
-export type SpendingRequest = {
-    mode: SpendingMode,
-    monthRange: MonthRange,
-    tags: string[]
-};
-
-export type SpendingRequestReduceAction =
-    | { type: "mode", mode: SpendingMode }
-    | { type: "monthRange", monthRange: MonthRange }
-    | { type: "tags", tags: string[] };
-
-function requestReducer(request: SpendingRequest, action: SpendingRequestReduceAction) {
-    switch (action.type) {
-        case "tags":
-            return {...request, tags: action.tags};
-        case "mode":
-            return {...request, mode: action.mode};
-        case "monthRange":
-            return {...request, monthRange: action.monthRange};
-        default:
-            throw new Error("Unsupported request reducer action");
-    }
+export interface SpendingFilterProps {
+    requestDispatch: Dispatch<SpendingRequestReduceAction>;
+    request: SpendingRequest;
 }
 
-export type SpendingFilterProps = {
-    onRequestChanged: (request: SpendingRequest) => void,
-};
-
-export const InitialSpendingRequest: SpendingRequest = {
-    mode: "month",
-    monthRange: {from: {year: 2019, month: 1}, to: {year: 2022, month: 12}},
-    tags: []
-};
-
-function SpendingFilter({onRequestChanged}: SpendingFilterProps) {
-    const [request, requestDispatch] = useReducer(requestReducer, InitialSpendingRequest);
-    const onTagsChanged = useCallback((tags: string[]) => requestDispatch({type: "tags", tags: tags}), []);
-
-    useEffect(() => onRequestChanged(request), [request, onRequestChanged]);
+export function SpendingFilter({requestDispatch, request}: SpendingFilterProps) {
+    const onTagsChanged = useCallback((tags: string[]) => requestDispatch({
+        type: "tags",
+        tags: tags
+    }), [requestDispatch]);
+    const onMonthRangeChanged = useCallback((value: MonthRange) => requestDispatch({
+        type: "monthRange",
+        monthRange: value
+    }), [requestDispatch]);
 
     return (
         <>
             <Form className="row my-2 align-items-center">
                 <div className="col-auto">
                     <InputGroup>
+                        {/* Buttons are being rerendered anyway, since the use request.mode as state,
+                         no need to memoize event handler */}
                         <Button onClick={() => requestDispatch({type: "mode", mode: "month"})}
                                 active={request.mode === "month"}>Monthly</Button>
                         <Button onClick={() => requestDispatch({type: "mode", mode: "year"})}
                                 active={request.mode === "year"}>Yearly</Button>
-                        <MonthPicker onChange={(value) => requestDispatch({type: "monthRange", monthRange: value})}
-                                     initialRange={request.monthRange}/>
+                        <MonthPicker onChange={onMonthRangeChanged}/>
                     </InputGroup>
                 </div>
                 <div className="col-auto">
@@ -70,14 +46,3 @@ function SpendingFilter({onRequestChanged}: SpendingFilterProps) {
         </>
     );
 }
-
-// SpendingFilter.propTypes = {
-//     requestDispatch: PropTypes.func.isRequired,
-//     request: PropTypes.shape({
-//         mode: PropTypes.string.isRequired,
-//         monthRange: MonthPicker.propTypes.initialRange,
-//         tags: PropTypes.array.isRequired
-//     }).isRequired
-// };
-
-export {SpendingFilter};
