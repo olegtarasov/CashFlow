@@ -4,14 +4,15 @@ using ZenMoneyPlus.Helpers;
 
 namespace ZenMoneyPlus.Models;
 
-public record TransactionModel
+internal record TransactionModel
 {
     public string Id { get; init; }
     public long User { get; init; }
     public LocalDate Date { get; init; }
-    
+
     [JsonConverter(typeof(UnixSecondsToInstantConverter))]
     public Instant Changed { get; init; }
+
     public decimal? Income { get; init; }
     public decimal? Outcome { get; init; }
     public long IncomeInstrument { get; init; }
@@ -19,6 +20,7 @@ public record TransactionModel
 
     [JsonConverter(typeof(UnixSecondsToInstantConverter))]
     public Instant Created { get; init; }
+
     public string? OriginalPayee { get; init; }
     public bool Deleted { get; init; }
     public bool Viewed { get; init; }

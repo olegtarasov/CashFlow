@@ -47,6 +47,7 @@ app.Configure(config =>
                   config.AddCommand<SyncCommand>("sync");
                   config.AddCommand<ReceiptsCommand>("receipts");
                   config.AddCommand<DepersonalizeCommand>("depersonalize");
+                  config.AddCommand<ServeCommand>("serve");
                   config.SetExceptionHandler(exception => { logger.Fatal(exception, "Fatal exception"); });
               });
 

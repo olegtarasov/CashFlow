@@ -1,5 +1,5 @@
 namespace ZenMoneyPlus.Cli.Settings;
 
-public class SyncSettings : CliSettingsBase
+internal class SyncSettings : CliSettingsBase
 {
 }

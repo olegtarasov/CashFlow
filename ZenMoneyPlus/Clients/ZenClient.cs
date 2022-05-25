@@ -1,10 +1,5 @@
-using System.Net.Mime;
-using System.Text;
-using System.Text.Json;
 using RestSharp;
 using RestSharp.Serializers.Json;
-using Serilog;
-using ZenMoneyPlus.Data.Entities;
 using ZenMoneyPlus.Helpers;
 using ZenMoneyPlus.Messages;
 using ZenMoneyPlus.Models;
@@ -12,18 +7,21 @@ using ZenMoneyPlus.Services;
 
 namespace ZenMoneyPlus.Clients;
 
-public class ZenClient
+internal class ZenClient
 {
-    private static readonly ILogger Log = Serilog.Log.ForContext<ZenClient>();
+    private readonly ILogger<ZenClient> _logger;
 
     private readonly IAuthTokenProvider _tokenProvider;
-        
-    protected readonly RestClient Client;
-        
 
-    public ZenClient(IAuthTokenProvider tokenProvider)
+    protected readonly RestClient Client;
+
+    /// <summary>
+    /// Ctor.
+    /// </summary>
+    public ZenClient(IAuthTokenProvider tokenProvider, ILogger<ZenClient> logger)
     {
         _tokenProvider = tokenProvider;
+        _logger = logger;
 
         Client = new RestClient(new RestClientOptions("https://api.zenmoney.ru")
                                 {
@@ -37,7 +35,7 @@ public class ZenClient
         var request = await CreateRequest("v8/diff");
         request.AddJsonBody(new SyncRequest(DateTimeOffset.UtcNow.ToUnixTimeSeconds(), timestamp));
 
-        Log.Information("Sending sync request");
+        _logger.LogInformation("Sending sync request");
 
         var resopnse = await Client.ExecuteAsync<SyncResponse>(request);
         if (!resopnse.IsSuccessful)
@@ -50,11 +48,11 @@ public class ZenClient
     {
         var request = await CreateRequest("parse_qr_code");
         request.AddJsonBody(new { code = qrCode });
-        
+
         var response = await Client.ExecuteAsync<ReceiptModel>(request);
         if (!response.IsSuccessful)
             return null;
-        
+
         return response.Data;
     }
 

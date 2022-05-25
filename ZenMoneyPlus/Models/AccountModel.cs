@@ -5,7 +5,7 @@ using ZenMoneyPlus.Helpers;
 
 namespace ZenMoneyPlus.Models;
 
-public record AccountModel
+internal record AccountModel
 {
     public string Id { get; init; }
     public long User { get; init; }

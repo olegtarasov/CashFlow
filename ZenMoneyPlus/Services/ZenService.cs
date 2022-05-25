@@ -10,7 +10,7 @@ using ZenMoneyPlus.Models;
 
 namespace ZenMoneyPlus.Services;
 
-public class ZenService
+internal class ZenService
 {
     private readonly ILogger<ZenService> _log;
     private readonly ZenContext _context;

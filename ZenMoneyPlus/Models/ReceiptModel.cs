@@ -4,13 +4,14 @@ using ZenMoneyPlus.Helpers;
 
 namespace ZenMoneyPlus.Models;
 
-public record ReceiptModel
+internal record ReceiptModel
 {
     public decimal? Sum { get; init; }
     public LocalDate Date { get; init; }
-    
+
     [JsonConverter(typeof(IncompleteTimeToLocalTimeConverter))]
     public LocalTime Time { get; init; }
+
     public string? Payee { get; init; }
     public string? Address { get; init; }
     public decimal? CardSum { get; init; }

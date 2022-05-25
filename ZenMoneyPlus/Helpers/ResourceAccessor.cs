@@ -6,7 +6,7 @@ namespace ZenMoneyPlus.Helpers;
 /// <summary>
 /// A helper class to load resources from an assembly.
 /// </summary>
-public class ResourceAccessor
+internal class ResourceAccessor
 {
     private readonly Assembly _assembly;
     private readonly string _assemblyName;

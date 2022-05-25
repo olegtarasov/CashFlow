@@ -4,7 +4,7 @@ using ZenMoneyPlus.Services;
 
 namespace ZenMoneyPlus.Cli.Commands;
 
-public class SyncCommand : AsyncCommand<SyncSettings>
+internal class SyncCommand : AsyncCommand<SyncSettings>
 {
     private readonly IAuthTokenProvider _tokenProvider;
     private readonly ZenService _zenService;

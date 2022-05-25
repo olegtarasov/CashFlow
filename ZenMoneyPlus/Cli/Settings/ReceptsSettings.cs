@@ -1,5 +1,5 @@
 namespace ZenMoneyPlus.Cli.Settings;
 
-public class ReceptsSettings : CliSettingsBase
+internal class ReceptsSettings : CliSettingsBase
 {
 }

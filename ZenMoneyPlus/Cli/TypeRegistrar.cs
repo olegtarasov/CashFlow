@@ -6,7 +6,7 @@ namespace ZenMoneyPlus.Cli;
 /// <summary>
 /// A type registrar to use with Spectre.Console projects.
 /// </summary>
-public sealed class TypeRegistrar : ITypeRegistrar
+internal sealed class TypeRegistrar : ITypeRegistrar
 {
     private readonly IServiceCollection _builder;
 

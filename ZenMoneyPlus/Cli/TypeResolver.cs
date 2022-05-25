@@ -5,7 +5,7 @@ namespace ZenMoneyPlus.Cli;
 /// <summary>
 /// A type resolver to use with Spectre.Console projects.
 /// </summary>
-public sealed class TypeResolver : ITypeResolver, IDisposable
+internal sealed class TypeResolver : ITypeResolver, IDisposable
 {
     private readonly IServiceProvider _provider;
 

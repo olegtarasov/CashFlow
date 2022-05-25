@@ -9,7 +9,7 @@ namespace ZenMoneyPlus.Helpers;
 /// <summary>
 /// Helper methods for JSON serialization.
 /// </summary>
-public static class JsonHelper
+internal static class JsonHelper
 {
     /// <summary>
     /// Default JSON serializer options.

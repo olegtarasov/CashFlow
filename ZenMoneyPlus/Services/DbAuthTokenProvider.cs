@@ -4,7 +4,7 @@ using ZenMoneyPlus.Data.Entities;
 
 namespace ZenMoneyPlus.Services;
 
-public class DbAuthTokenProvider : IAuthTokenProvider
+internal class DbAuthTokenProvider : IAuthTokenProvider
 {
     private readonly ZenContext _context;
 

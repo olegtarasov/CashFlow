@@ -1,6 +1,6 @@
 namespace ZenMoneyPlus.Models;
 
-public record ReceiptItemModel
+internal record ReceiptItemModel
 {
     public decimal? Sum { get; init; }
     public string? Name { get; init; }

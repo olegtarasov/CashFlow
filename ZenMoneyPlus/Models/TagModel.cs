@@ -4,11 +4,11 @@ using ZenMoneyPlus.Helpers;
 
 namespace ZenMoneyPlus.Models;
 
-public record TagModel
+internal record TagModel
 {
     public string Id { get; init; }
     public long User { get; init; }
-    
+
     [JsonConverter(typeof(UnixSecondsToInstantConverter))]
     public Instant Changed { get; init; }
 

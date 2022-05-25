@@ -4,7 +4,7 @@ using NodaTime;
 
 namespace ZenMoneyPlus.Helpers;
 
-public class UnixSecondsToInstantConverter : JsonConverter<Instant>
+internal class UnixSecondsToInstantConverter : JsonConverter<Instant>
 {
     public override Instant Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
@@ -17,7 +17,7 @@ public class UnixSecondsToInstantConverter : JsonConverter<Instant>
     }
 }
 
-public class IncompleteTimeToLocalTimeConverter : JsonConverter<LocalTime>
+internal class IncompleteTimeToLocalTimeConverter : JsonConverter<LocalTime>
 {
     public override LocalTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

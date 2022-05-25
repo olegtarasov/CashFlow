@@ -1,6 +1,6 @@
 namespace ZenMoneyPlus.Helpers;
 
-public static class CollectionHelpers
+internal static class CollectionHelpers
 {
     public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T>? source)
     {

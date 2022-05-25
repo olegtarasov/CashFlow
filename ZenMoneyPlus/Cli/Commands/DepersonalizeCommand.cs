@@ -3,7 +3,7 @@ using ZenMoneyPlus.Services;
 
 namespace ZenMoneyPlus.Cli.Commands;
 
-public class DepersonalizeCommand : AsyncCommand
+internal class DepersonalizeCommand : AsyncCommand
 {
     private readonly DepersonalizationService _depersonalizationService;
 

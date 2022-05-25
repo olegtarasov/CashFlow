@@ -5,7 +5,7 @@ using ZenMoneyPlus.Helpers;
 
 namespace ZenMoneyPlus.Services;
 
-public class DepersonalizationService
+internal class DepersonalizationService
 {
     private readonly ILogger<DepersonalizationService> _logger;
     private readonly ZenContext _context;

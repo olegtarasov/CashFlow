@@ -28,16 +28,10 @@ public class ZenContext : DbContext
                     .HasOne(x => x.ParentTag)
                     .WithMany(x => x.ChildrenTags)
                     .HasForeignKey(x => x.Parent);
-            
+
         modelBuilder.Entity<Transaction>()
                     .HasMany(x => x.Tags)
                     .WithMany(x => x.Transactions);
-
-        // modelBuilder.Entity<TransactionTag>()
-        //     .HasOne(tt => tt.Tag)
-        //     .WithMany(t => t.TransactionTags)
-        //     .HasForeignKey()
-
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)

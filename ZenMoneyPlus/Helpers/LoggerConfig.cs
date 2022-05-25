@@ -31,7 +31,7 @@ public enum ConsoleMode
 /// <summary>
 /// A class that configures logging with Serilog.
 /// </summary>
-public static class LoggerConfig
+internal static class LoggerConfig
 {
     private const string FileTemplate =
         "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}][{SourceContext}] {Message:lj}{NewLine}{Exception}";
