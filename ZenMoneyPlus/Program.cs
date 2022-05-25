@@ -18,6 +18,7 @@ var services = new ServiceCollection();
 services.AddLogging(builder => builder.AddSerilog());
 services.AddTransient<IAuthTokenProvider, DbAuthTokenProvider>();
 services.AddTransient<ZenService>();
+services.AddTransient<DepersonalizationService>();
 services.AddDbContext<ZenContext>();
 services.AddTransient<ZenClient>();
 services.AddAutoMapper(cfg =>
@@ -45,6 +46,7 @@ app.Configure(config =>
               {
                   config.AddCommand<SyncCommand>("sync");
                   config.AddCommand<ReceiptsCommand>("receipts");
+                  config.AddCommand<DepersonalizeCommand>("depersonalize");
                   config.SetExceptionHandler(exception => { logger.Fatal(exception, "Fatal exception"); });
               });
 

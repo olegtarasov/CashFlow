@@ -33,4 +33,9 @@
         <Folder Include="Migrations" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Resources\nouns.txt" />
+      <EmbeddedResource Include="Resources\nouns.txt" />
+    </ItemGroup>
+
 </Project>
