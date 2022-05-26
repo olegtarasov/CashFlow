@@ -54,7 +54,7 @@ internal class DepersonalizationService
 
         foreach (var item in _context.ReceiptItems)
         {
-            item.Name = ReplaceToken(item.Name);
+            item.Name = ReplaceToken(item.Name) ?? throw new InvalidOperationException();
             item.Price = MutateMoney(item.Price);
             item.Sum = Math.Round(item.Price * item.Quantity, 2);
         }
@@ -76,12 +76,9 @@ internal class DepersonalizationService
                 item.Inn = long.TryParse(item.Inn, out long inn) ? ReplaceId(inn).ToString() : null;
             }
 
-            if (item.Sum != null)
-            {
-                item.Sum = item.Items.Count > 0
-                               ? Math.Round(item.Items.Sum(x => x.Sum), 2)
-                               : MutateMoney(item.Sum.Value);
-            }
+            item.Sum = item.Items.Count > 0
+                           ? Math.Round(item.Items.Sum(x => x.Sum), 2)
+                           : MutateMoney(item.Sum);
 
             if (item.CardSum != null)
             {
@@ -102,7 +99,7 @@ internal class DepersonalizationService
         {
             item.Icon = ReplaceToken(item.Icon);
             item.Picture = ReplaceToken(item.Picture);
-            item.Title = ReplaceToken(item.Title);
+            item.Title = ReplaceToken(item.Title) ?? throw new InvalidOperationException();
             item.User = ReplaceId(item.User);
         }
 
@@ -148,8 +145,8 @@ internal class DepersonalizationService
             item.OpIncome = item.OpOutcome = null;
         }
 
-        _context.RemoveRange(removed.Where(x => x.Receipt != null).SelectMany(x => x.Receipt.Items));
-        _context.RemoveRange(removed.Where(x => x.Receipt != null).Select(x => x.Receipt));
+        _context.RemoveRange(removed.Where(x => x.Receipt != null).SelectMany(x => x.Receipt!.Items));
+        _context.RemoveRange(removed.Where(x => x.Receipt != null).Select(x => x.Receipt!));
         _context.RemoveRange(removed);
 
         await _context.SaveChangesAsync();

@@ -5,7 +5,7 @@ using ZenMoneyPlus.Cli.Commands;
 using ZenMoneyPlus.Data;
 using ZenMoneyPlus.Data.Entities;
 using ZenMoneyPlus.Helpers;
-using ZenMoneyPlus.Web.Models;
+using ZenMoneyPlus.Messages;
 
 namespace ZenMoneyPlus.Controllers;
 
@@ -19,13 +19,19 @@ public class SpendingController : ControllerBase
     private readonly ILogger<SpendingController> _logger;
     private readonly ZenContext _context;
 
-
+    /// <summary>
+    /// Ctor.
+    /// </summary>
     public SpendingController(ZenContext context, ILogger<SpendingController> logger)
     {
         _context = context;
         _logger = logger;
     }
 
+    /// <summary>
+    /// Calculates spendings data.
+    /// </summary>
+    /// <param name="request">Spending data request.</param>
     [HttpPost]
     public async Task<SpendingResponse> GetSpendingData([FromBody] SpendingRequest request)
     {

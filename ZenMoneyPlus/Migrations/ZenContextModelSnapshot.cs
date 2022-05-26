@@ -144,7 +144,7 @@ namespace ZenMoneyPlus.Migrations
                     b.Property<string>("Payee")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal?>("Sum")
+                    b.Property<decimal>("Sum")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Time")
@@ -171,6 +171,7 @@ namespace ZenMoneyPlus.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Price")
@@ -235,7 +236,7 @@ namespace ZenMoneyPlus.Migrations
                     b.Property<string>("Picture")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool?>("Required")
+                    b.Property<bool>("Required")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("ShowIncome")
@@ -245,6 +246,7 @@ namespace ZenMoneyPlus.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<long>("User")

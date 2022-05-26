@@ -3,23 +3,56 @@ using ZenMoneyPlus.Data.Entities;
 
 namespace ZenMoneyPlus.Data;
 
+/// <summary>
+/// Db context.
+/// </summary>
 public class ZenContext : DbContext
 {
+    /// <summary>
+    /// Ctor.
+    /// </summary>
     public ZenContext()
     {
     }
 
+    /// <summary>
+    /// Ctor.
+    /// </summary>
     public ZenContext(DbContextOptions options) : base(options)
     {
     }
 
-    public DbSet<Transaction> Transactions { get; set; }
-    public DbSet<Tag> Tags { get; set; }
-    public DbSet<Account> Accounts { get; set; }
-    public DbSet<Setting> Settings { get; set; }
-    public DbSet<Receipt> Receipts { get; set; }
-    public DbSet<ReceiptItem> ReceiptItems { get; set; }
+    /// <summary>
+    /// Transactions.
+    /// </summary>
+    public DbSet<Transaction> Transactions => Set<Transaction>();
 
+    /// <summary>
+    /// Tags.
+    /// </summary>
+    public DbSet<Tag> Tags => Set<Tag>();
+
+    /// <summary>
+    /// Accounts.
+    /// </summary>
+    public DbSet<Account> Accounts => Set<Account>();
+
+    /// <summary>
+    /// Settings.
+    /// </summary>
+    public DbSet<Setting> Settings => Set<Setting>();
+
+    /// <summary>
+    /// Receipts.
+    /// </summary>
+    public DbSet<Receipt> Receipts => Set<Receipt>();
+
+    /// <summary>
+    /// Receipt items.
+    /// </summary>
+    public DbSet<ReceiptItem> ReceiptItems => Set<ReceiptItem>();
+
+    /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -34,6 +67,7 @@ public class ZenContext : DbContext
                     .WithMany(x => x.Transactions);
     }
 
+    /// <inheritdoc />
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         base.OnConfiguring(options);

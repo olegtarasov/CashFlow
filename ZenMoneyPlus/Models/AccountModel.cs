@@ -7,7 +7,7 @@ namespace ZenMoneyPlus.Models;
 
 internal record AccountModel
 {
-    public string Id { get; init; }
+    public string Id { get; init; } = string.Empty;
     public long User { get; init; }
 
     [JsonConverter(typeof(UnixSecondsToInstantConverter))]

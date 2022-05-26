@@ -23,7 +23,18 @@ internal class ServeCommand : AsyncCommand
         builder.Services.AddDbContext<ZenContext>();
 
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(options =>
+                                       {
+                                           var xmlFiles = Directory.EnumerateFiles(
+                                               AppContext.BaseDirectory,
+                                               "*.xml",
+                                               SearchOption.TopDirectoryOnly);
+                                           foreach (string filename in xmlFiles)
+                                           {
+                                               options.IncludeXmlComments(
+                                                   Path.Combine(AppContext.BaseDirectory, filename));
+                                           }
+                                       });
 
         var app = builder.Build();
 

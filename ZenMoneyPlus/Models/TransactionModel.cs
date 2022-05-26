@@ -6,15 +6,15 @@ namespace ZenMoneyPlus.Models;
 
 internal record TransactionModel
 {
-    public string Id { get; init; }
+    public string Id { get; init; } = string.Empty;
     public long User { get; init; }
     public LocalDate Date { get; init; }
 
     [JsonConverter(typeof(UnixSecondsToInstantConverter))]
     public Instant Changed { get; init; }
 
-    public decimal? Income { get; init; }
-    public decimal? Outcome { get; init; }
+    public decimal Income { get; init; }
+    public decimal Outcome { get; init; }
     public long IncomeInstrument { get; init; }
     public long OutcomeInstrument { get; init; }
 
