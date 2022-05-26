@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using ZenMoneyPlus.Data;
+using ZenMoneyPlus.Data.Entities;
 using ZenMoneyPlus.Helpers;
 
 namespace ZenMoneyPlus.Services;
@@ -40,6 +41,8 @@ internal class DepersonalizationService
         {
             account.Title = ReplaceToken(account.Title);
             account.User = ReplaceId(account.User);
+            account.StartBalance = 0;
+            account.Balance = 0;
         }
 
         await _context.SaveChangesAsync();
@@ -52,6 +55,8 @@ internal class DepersonalizationService
         foreach (var item in _context.ReceiptItems)
         {
             item.Name = ReplaceToken(item.Name);
+            item.Price = MutateMoney(item.Price);
+            item.Sum = Math.Round(item.Price * item.Quantity, 2);
         }
 
         await _context.SaveChangesAsync();
@@ -70,6 +75,20 @@ internal class DepersonalizationService
             {
                 item.Inn = long.TryParse(item.Inn, out long inn) ? ReplaceId(inn).ToString() : null;
             }
+
+            if (item.Sum != null)
+            {
+                item.Sum = item.Items.Count > 0
+                               ? Math.Round(item.Items.Sum(x => x.Sum), 2)
+                               : MutateMoney(item.Sum.Value);
+            }
+
+            if (item.CardSum != null)
+            {
+                item.CardSum = item.Sum;
+            }
+
+            item.CashSum = null;
         }
 
         await _context.SaveChangesAsync();
@@ -94,8 +113,16 @@ internal class DepersonalizationService
     {
         _logger.LogInformation("Depersonalizing transactions");
 
+        var removed = new List<Transaction>();
+
         foreach (var item in _context.Transactions)
         {
+            if (item.Income > 0)
+            {
+                removed.Add(item);
+                continue;
+            }
+
             item.OriginalPayee = ReplaceToken(item.OriginalPayee);
             item.QrCode = null;
             item.Comment = ReplaceToken(item.Comment);
@@ -105,9 +132,35 @@ internal class DepersonalizationService
             item.Merchant = ReplaceToken(item.Merchant);
             item.ReminderMarker = null;
             item.User = ReplaceId(item.User);
+
+            if (item.Outcome > 0)
+            {
+                if (item.Receipt != null && item.Receipt.Items.Count > 0)
+                {
+                    item.Outcome = Math.Round(item.Receipt.Items.Sum(x => x.Sum), 2);
+                }
+                else
+                {
+                    item.Outcome = MutateMoney(item.Outcome);
+                }
+            }
+
+            item.OpIncome = item.OpOutcome = null;
         }
 
+        _context.RemoveRange(removed.Where(x => x.Receipt != null).SelectMany(x => x.Receipt.Items));
+        _context.RemoveRange(removed.Where(x => x.Receipt != null).Select(x => x.Receipt));
+        _context.RemoveRange(removed);
+
         await _context.SaveChangesAsync();
+    }
+
+    private decimal MutateMoney(decimal amount)
+    {
+        decimal mult = amount < 20_000
+                           ? (decimal)_rnd.NextDouble()
+                           : (decimal)(_rnd.NextDouble() * (0.05 - 0.01) + 0.01);
+        return Math.Round(amount * mult, 2);
     }
 
     private long ReplaceId(long id) => _ids.GetOrAdd(id, () => _rnd.NextInt64());

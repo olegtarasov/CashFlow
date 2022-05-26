@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -40,7 +41,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Resources\nouns.txt"/>
         <EmbeddedResource Include="Resources\nouns.txt"/>
     </ItemGroup>
 

@@ -1,5 +1,5 @@
 {
-  "name": "zenmoneyplus.web",
+  "name": "zenmoneyplus",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -61,6 +61,9 @@
   "packageManager": "yarn@3.2.1",
   "dependenciesMeta": {
     "eslint@8.15.0": {
+      "unplugged": true
+    },
+    "eslint@8.16.0": {
       "unplugged": true
     }
   }

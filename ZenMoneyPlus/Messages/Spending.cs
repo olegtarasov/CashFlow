@@ -9,7 +9,27 @@ public enum SpendingMode
     Year
 }
 
-public record MonthAndYear(int Month, int Year);
+public record MonthAndYear(int Month, int Year) : IComparable<MonthAndYear>
+{
+    public int CompareTo(MonthAndYear? other)
+    {
+        if (ReferenceEquals(this, other))
+        {
+            return 0;
+        }
+
+        if (ReferenceEquals(null, other))
+        {
+            return 1;
+        }
+
+        int year = Year.CompareTo(other.Year);
+        if (year != 0)
+            return year;
+
+        return Month.CompareTo(other.Month);
+    }
+}
 
 public record MonthRange(MonthAndYear From, MonthAndYear To);
 

@@ -32,7 +32,7 @@ public class SpendingController : ControllerBase
         var data = request.Mode switch
                    {
                        SpendingMode.Month => await CalculateSpendingData(
-                                                 request, x => (x.Date.Month, x.Date.Year),
+                                                 request, x => new MonthAndYear(x.Date.Month, x.Date.Year),
                                                  x => $"{x.Month:D2}.{x.Year}"),
                        SpendingMode.Year => await CalculateSpendingData(
                                                 request, x => x.Date.Year,
@@ -66,7 +66,7 @@ public class SpendingController : ControllerBase
 
         var grouped = new SortedDictionary<TGroupKey, Dictionary<Tag, List<Transaction>>>();
         var tagTotals = new Dictionary<Tag, decimal>();
-        foreach (var group in allTransactions.GroupBy(groupKey))
+        foreach (var group in allTransactions.GroupBy(groupKey).OrderBy(x => x.Key))
         {
             var byTag = new Dictionary<Tag, List<Transaction>>();
             foreach (var transaction in group)
