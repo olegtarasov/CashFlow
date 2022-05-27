@@ -6,11 +6,13 @@ using CashFlow.Cli;
 using CashFlow.Cli.Commands;
 using CashFlow.Data;
 using CashFlow.Helpers;
+using CashFlow.Services;
 
 LoggerConfig.ConfigureSerilog(false, Debugger.IsAttached ? ConsoleMode.System : ConsoleMode.Colored);
 
 var services = new ServiceCollection();
 services.AddLogging(builder => builder.AddSerilog());
+services.AddTransient<DepersonalizationService>();
 services.AddDbContext<ZenContext>();
 
 var registrar = new TypeRegistrar(services);
@@ -25,6 +27,7 @@ var app = new CommandApp(registrar);
 
 app.Configure(config =>
               {
+                  config.AddCommand<DepersonalizeCommand>("depersonalize");
                   config.AddCommand<ServeCommand>("serve");
                   config.SetExceptionHandler(exception => { logger.Fatal(exception, "Fatal exception"); });
               });
