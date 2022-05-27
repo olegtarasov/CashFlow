@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "ZenMoneyPlus": {
+    "CashFlow": {
       "commandLineArgs": "serve",
       "commandName": "Project",
       "launchBrowser": true,
