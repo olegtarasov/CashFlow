@@ -9,7 +9,7 @@ export function NavMenu() {
         <header>
             <Container>
                 <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
-                    <NavbarBrand tag={Link} to="/">ZenMoneyPlus</NavbarBrand>
+                    <NavbarBrand tag={Link} to="/">CashFlow</NavbarBrand>
                     <NavbarToggler onClick={() => setIsOpen(!isOpen)} className="mr-2"/>
                     <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={isOpen}
                               navbar>
