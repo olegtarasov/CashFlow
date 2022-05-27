@@ -455,3 +455,6 @@ fabric.properties
 
 api.zenmoney.proxymanlog
 data.db*
+certs/*
+!certs/localhost.conf
+
