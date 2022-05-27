@@ -10,36 +10,6 @@ namespace CashFlow.Data.Entities;
 public class Tag : EntityBase
 {
     /// <summary>
-    /// Icon.
-    /// </summary>
-    public string? Icon { get; set; }
-
-    /// <summary>
-    /// ???
-    /// </summary>
-    public bool BudgetIncome { get; set; }
-
-    /// <summary>
-    /// ???
-    /// </summary>
-    public bool BudgetOutcome { get; set; }
-
-    /// <summary>
-    /// ???
-    /// </summary>
-    public bool Required { get; set; }
-
-    /// <summary>
-    /// Color.
-    /// </summary>
-    public string? Color { get; set; }
-
-    /// <summary>
-    /// Picture.
-    /// </summary>
-    public string? Picture { get; set; }
-
-    /// <summary>
     /// Title.
     /// </summary>
     public string Title { get; set; } = string.Empty;

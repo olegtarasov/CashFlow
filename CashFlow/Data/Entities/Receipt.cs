@@ -34,11 +34,6 @@ public class Receipt
     public string? Payee { get; set; }
 
     /// <summary>
-    /// Venue address.
-    /// </summary>
-    public string? Address { get; set; }
-
-    /// <summary>
     /// Amount paid with card.
     /// </summary>
     public decimal? CardSum { get; set; }
@@ -47,11 +42,6 @@ public class Receipt
     /// Amount paid with cash.
     /// </summary>
     public decimal? CashSum { get; set; }
-
-    /// <summary>
-    /// Payee INN.
-    /// </summary>
-    public string? Inn { get; set; }
 
     /// <summary>
     /// Receipt items.

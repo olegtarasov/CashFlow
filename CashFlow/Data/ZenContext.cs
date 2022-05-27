@@ -38,11 +38,6 @@ public class ZenContext : DbContext
     public DbSet<Account> Accounts => Set<Account>();
 
     /// <summary>
-    /// Settings.
-    /// </summary>
-    public DbSet<Setting> Settings => Set<Setting>();
-
-    /// <summary>
     /// Receipts.
     /// </summary>
     public DbSet<Receipt> Receipts => Set<Receipt>();

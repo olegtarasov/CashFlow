@@ -10,35 +10,39 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="11.0.1"/>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0"/>
-        <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="6.0.0"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.4"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4"/>
-        <PackageReference Include="NodaTime.Serialization.SystemTextJson" Version="1.0.0"/>
-        <PackageReference Include="RestSharp" Version="107.3.0"/>
-        <PackageReference Include="Serilog.Exceptions" Version="8.0.0"/>
-        <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0"/>
-        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1"/>
-        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0"/>
-        <PackageReference Include="Spectre.Console" Version="0.44.0"/>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0"/>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.4"/>
-        <PackageReference Include="Serilog.AspNetCore" Version="5.0.0"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1"/>
-        <PackageReference Include="NodaTime" Version="3.0.9"/>
-        <PackageReference Include="MicroElements.Swashbuckle.NodaTime" Version="4.0.1"/>
+        <PackageReference Include="AutoMapper" Version="11.0.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="6.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
+        <PackageReference Include="NodaTime.Serialization.SystemTextJson" Version="1.0.0" />
+        <PackageReference Include="RestSharp" Version="107.3.0" />
+        <PackageReference Include="Serilog.Exceptions" Version="8.0.0" />
+        <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+        <PackageReference Include="Spectre.Console" Version="0.44.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.4" />
+        <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+        <PackageReference Include="NodaTime" Version="3.0.9" />
+        <PackageReference Include="MicroElements.Swashbuckle.NodaTime" Version="4.0.1" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Migrations"/>
-        <Folder Include="Properties"/>
+        <Folder Include="Migrations" />
+        <Folder Include="Properties" />
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="Resources\nouns.txt"/>
+        <EmbeddedResource Include="Resources\nouns.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="data.db" />
     </ItemGroup>
 
 </Project>

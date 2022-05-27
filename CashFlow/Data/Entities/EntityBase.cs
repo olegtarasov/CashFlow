@@ -15,11 +15,6 @@ public abstract class EntityBase
     public string Id { get; set; } = string.Empty;
 
     /// <summary>
-    /// User id that owns this instance.
-    /// </summary>
-    public long User { get; set; }
-
-    /// <summary>
     /// An instant that entity was last changed at.
     /// </summary>
     public Instant Changed { get; set; }
