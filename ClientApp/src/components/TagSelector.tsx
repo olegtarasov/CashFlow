@@ -59,6 +59,6 @@ export const TagSelector = React.memo(function TagSelector({onSelectedChanged}: 
 
     return (
         <DropdownTreeSelect className="my-2" data={tags}
-                            onChange={onSelectedChange}/>
+                                onChange={onSelectedChange}/>
     );
 });
