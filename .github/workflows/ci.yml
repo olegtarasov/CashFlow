@@ -27,5 +27,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          readme-filepath: Readme.md
+          readme-filepath: ./Readme.md
           repository: olegtarasov/CashFlow
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
