@@ -30,4 +30,4 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           readme-filepath: ./Readme.md
-          repository: olegtarasov/CashFlow
+          repository: olegtarasov/cashflow
