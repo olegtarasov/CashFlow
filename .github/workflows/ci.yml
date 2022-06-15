@@ -22,6 +22,8 @@ jobs:
           push: true
           file: CashFlow/Dockerfile
           tags: olegtarasov/cashflow:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Update repo description
         uses: peter-evans/dockerhub-description@v2
         with:
@@ -29,5 +31,3 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           readme-filepath: ./Readme.md
           repository: olegtarasov/CashFlow
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
