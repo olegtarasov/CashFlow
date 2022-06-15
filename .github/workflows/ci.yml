@@ -22,3 +22,9 @@ jobs:
           push: true
           file: CashFlow/Dockerfile
           tags: olegtarasov/cashflow:latest
+      - name: Update repo description
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: olegtarasov/CashFlow
