@@ -33,13 +33,14 @@
     "rimraf": "^3.0.2"
   },
   "scripts": {
-    "prestart": "node aspnetcore-https && node aspnetcore-react",
+    "prestart": "node certs-react",
     "start": "yarn prestart && rimraf ./build && react-scripts start",
     "build": "react-scripts build",
     "test": "cross-env CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint ./src/"
   },
+  "proxy": "http://localhost:7092",
   "eslintConfig": {
     "extends": [
       "react-app",
